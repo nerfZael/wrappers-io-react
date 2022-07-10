@@ -1,0 +1,15 @@
+.Tabs {
+  .nav-item {
+    :hover {
+      background: #1b3363;
+    }
+    &.active {
+      background: #1b3363;
+    }
+    cursor: pointer;
+    background: #7177ff8c;
+    .nav-link {
+      color: #ffffff;
+    }
+  }
+}
