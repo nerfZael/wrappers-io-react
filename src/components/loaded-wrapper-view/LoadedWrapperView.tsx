@@ -11,9 +11,11 @@ import { IPFSHTTPClient } from "ipfs-http-client";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark as codeStyle } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { useEthers } from "@usedapp/core";
-import { parseSchema, Abi } from "@polywrap/schema-parse";
+import { renderSchema } from "@polywrap/schema-compose";
+
 import { InMemoryFile } from "@nerfzael/encoding";
 import { useEffect, useState } from "react";
+import { deserializeWrapManifest } from "@polywrap/wrap-manifest-types-js";
 
 const LoadedWrapperView: React.FC<{
   wrapper: LoadedWrapper;
@@ -49,30 +51,19 @@ const LoadedWrapperView: React.FC<{
         alert("No wrap.info file found");
         return;
       }
-      // const manifest: WrapManifest = deserializeWrapManifest(manifestContent);
-      // let parsedAbi: Abi | undefined = manifest.abi as unknown as Abi;
 
-      const schemaContent = wrapper.files.find(
-        (x) => x.path === "schema.graphql"
-      )?.content;
-      let schema: string | undefined;
-      let parsedAbi: Abi | undefined;
-      if (schemaContent) {
-        schema = new TextDecoder().decode(schemaContent);
-        parsedAbi = parseSchema(schema);
-      }
+      const manifest = deserializeWrapManifest(manifestContent);
+      const abi = manifest.abi;
+
+      const schema = renderSchema(abi, false).trim();
+      console.log(schema.trim());
 
       setWrapperInfo({
-        name: "wrapper",
-        abi: parsedAbi,
+        name: manifest.name,
+        abi: abi,
         schema: schema ? escapeHTML(schema) : undefined,
-        dependencies: parsedAbi
-          ? parsedAbi.importedModuleTypes.map((x) => x.uri)
-          : [],
-        methods:
-          parsedAbi && parsedAbi.moduleType
-            ? parsedAbi.moduleType.methods
-            : undefined,
+        dependencies: abi ? abi.importedModuleTypes.map((x) => x.uri) : [],
+        methods: abi && abi.moduleType ? abi.moduleType.methods : undefined,
       });
     })();
   }, [wrapper]);
@@ -101,44 +92,56 @@ const LoadedWrapperView: React.FC<{
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab}
           ></Tabs>
-          <div className="tab-body">
+          <div
+            className={`tab-body ${
+              selectedTab === "Schema" ? "code-back padding-0" : "padding-20"
+            }`}
+          >
             {selectedTab === "Files" && (
               <>
-                <table className="table" cellSpacing="3" cellPadding="3">
-                  <thead>
-                    <tr>
-                      <th>Path</th>
-                      <th>Size</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {wrapper.files &&
-                      wrapper.files.map((file: InMemoryFile, index: number) => (
-                        <tr key={index}>
-                          <td>
-                            <span>{file.path}</span>
-                          </td>
-                          <td>
-                            {file.content && (
-                              <span>
-                                {toPrettyNumber(file.content?.byteLength)} bytes
-                              </span>
-                            )}
-                            {!file.content && <span>Empty</span>}
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-                <div className="download">
-                  <button className="btn btn-success" onClick={downloadWrapper}>
-                    Download wrapper
-                  </button>
+                <div className="medium">
+                  <table className="table" cellSpacing="3" cellPadding="3">
+                    <thead>
+                      <tr>
+                        <th>Path</th>
+                        <th>Size</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {wrapper.files &&
+                        wrapper.files.map(
+                          (file: InMemoryFile, index: number) => (
+                            <tr key={index}>
+                              <td>
+                                <span>{file.path}</span>
+                              </td>
+                              <td>
+                                {file.content && (
+                                  <span>
+                                    {toPrettyNumber(file.content?.byteLength)}{" "}
+                                    bytes
+                                  </span>
+                                )}
+                                {!file.content && <span>Empty</span>}
+                              </td>
+                            </tr>
+                          )
+                        )}
+                    </tbody>
+                  </table>
+                  <div className="download">
+                    <button
+                      className="btn btn-success"
+                      onClick={downloadWrapper}
+                    >
+                      Download wrapper
+                    </button>
+                  </div>
                 </div>
               </>
             )}
             {selectedTab === "Methods" && wrapperInfo?.methods && (
-              <div>
+              <div className="medium">
                 {wrapperInfo.methods.map((x) => (
                   <div key={x.name}>
                     <span>{x.name}</span>
@@ -147,7 +150,7 @@ const LoadedWrapperView: React.FC<{
               </div>
             )}
             {selectedTab === "Dependencies" && (
-              <div>
+              <div className="medium">
                 {wrapperInfo?.dependencies.map((wrapUri: string) => (
                   <div key={wrapUri}>
                     <span
@@ -185,17 +188,13 @@ const LoadedWrapperView: React.FC<{
                 {wrapperInfo &&
                   !(
                     wrapperInfo.dependencies && wrapperInfo.dependencies.length
-                  ) && <div>No dependencies</div>}
+                  ) && <div className="medium">No dependencies</div>}
               </div>
             )}
-            {selectedTab === "Schema" && (
-              <div>
-                {wrapperInfo?.schema && (
-                  <SyntaxHighlighter language="graphql" style={codeStyle}>
-                    {wrapperInfo.schema}
-                  </SyntaxHighlighter>
-                )}
-              </div>
+            {selectedTab === "Schema" && wrapperInfo?.schema && (
+              <SyntaxHighlighter language="graphql" style={{ ...codeStyle }}>
+                {wrapperInfo.schema}
+              </SyntaxHighlighter>
             )}
             {selectedTab === "Deployment" && (
               <div>
