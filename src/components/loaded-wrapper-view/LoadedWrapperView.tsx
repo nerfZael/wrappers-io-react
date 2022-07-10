@@ -52,15 +52,15 @@ const LoadedWrapperView: React.FC<{
       }
 
       const manifest = deserializeWrapManifest(manifestContent);
-      const abi = manifest.abi;
+      const abi: any = manifest.abi as any;
 
-      const schema = renderSchema(abi, false).trim();
+      const schema = renderSchema(abi, false);
 
       setWrapperInfo({
         name: manifest.name,
         abi: abi,
         schema: schema,
-        dependencies: abi ? abi.importedModuleTypes.map((x) => x.uri) : [],
+        dependencies: abi ? abi.importedModuleTypes.map((x: any) => x.uri) : [],
         methods: abi && abi.moduleType ? abi.moduleType.methods : undefined,
       });
     })();

@@ -9,8 +9,8 @@ import {
   Polygon,
   Localhost,
   DAppProvider,
+  Config,
 } from "@usedapp/core";
-import { Config } from "prettier";
 
 const usedappConfig: Config = {
   autoConnect: true,
