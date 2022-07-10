@@ -1,25 +1,19 @@
 import { constants } from "../constants";
 import PublishWrapperModal from "../components/publish-wrapper-modal/PublishWrapperModal";
+import Navigation from "../components/navigation";
 
 import { ReactElement, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useEthers } from "@usedapp/core";
 import axios from "axios";
-import Navigation from "../components/navigation";
 import "react-app-polyfill/stable";
 import "react-app-polyfill/ie11";
 import "core-js/features/array/find";
 import "core-js/features/array/includes";
 import "core-js/features/number/is-nan";
-import Link from "next/link";
 
-const Home = ({}): ReactElement<any, any> => {
-  const {
-    account,
-    activateBrowserWallet,
-    library: provider,
-    chainId,
-  } = useEthers();
+const Home = (): ReactElement<any, any> => {
+  const { account, library: provider } = useEthers();
   const [indexedWrappers, setIndexedWrappers] = useState<any[]>([]);
   const [cidToPublish, setCidToPublish] = useState<string | undefined>();
   const [shouldShowPublishModal, setShouldShowPublishModal] = useState(false);

@@ -1,7 +1,8 @@
-import { useEthers } from "@usedapp/core";
-import Link from "next/link";
 import { Network } from "../utils/Network";
 import { toPrettyHex } from "../utils/toPrettyHex";
+
+import { useEthers } from "@usedapp/core";
+import Link from "next/link";
 
 const Navigation: React.FC = () => {
   const {

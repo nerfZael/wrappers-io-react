@@ -12,7 +12,6 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { a11yDark as codeStyle } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { useEthers } from "@usedapp/core";
 import { renderSchema } from "@polywrap/schema-compose";
-
 import { InMemoryFile } from "@nerfzael/encoding";
 import { useEffect, useState } from "react";
 import { deserializeWrapManifest } from "@polywrap/wrap-manifest-types-js";
