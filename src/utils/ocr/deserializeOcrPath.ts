@@ -1,16 +1,27 @@
 import { ethers } from "ethers";
 import { OcrId } from "@nerfzael/ocr-core";
 
-export const deserializeOcrPath = (path: string): {
-  ocrId: OcrId,
-  rest: string
-} | undefined => {
+export const deserializeOcrPath = (
+  path: string
+):
+  | {
+      ocrId: OcrId;
+      rest: string;
+    }
+  | undefined => {
   const parts = path.split("/");
-  const [version, chainId, contractAddress, packageIndex, startBlock, endBlock] = parts;
+  const [
+    version,
+    chainId,
+    contractAddress,
+    packageIndex,
+    startBlock,
+    endBlock,
+  ] = parts;
 
   if (version && chainId && contractAddress && packageIndex) {
     const rest = parts.slice(6, parts.length);
-    
+
     return {
       ocrId: {
         protocolVersion: parseInt(version),
@@ -20,7 +31,7 @@ export const deserializeOcrPath = (path: string): {
         startBlock: ethers.BigNumber.from(startBlock).toNumber(),
         endBlock: ethers.BigNumber.from(endBlock).toNumber(),
       },
-      rest: rest.join("/")
+      rest: rest.join("/"),
     };
   }
 

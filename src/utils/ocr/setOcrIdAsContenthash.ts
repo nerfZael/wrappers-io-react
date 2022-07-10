@@ -1,21 +1,34 @@
-import { ContractTransaction, ethers, Signer } from "ethers";
-import { decodeOcrIdFromContenthash, encodeOcrIdAsContenthash, OcrId } from "@nerfzael/ocr-core";
 import { EnsRegistryContract } from "../ens/EnsRegistryContract";
 import { EnsResolverContract } from "../ens/EnsResolverContract";
-// window.Buffer = window.Buffer || require("buffer").Buffer;
 
-export const setOcrIdAsContenthash = async (domain: string, ocrId: OcrId, registryAddress: string, signer: Signer): Promise<ContractTransaction> => {
+import { ContractTransaction, ethers, Signer } from "ethers";
+import {
+  decodeOcrIdFromContenthash,
+  encodeOcrIdAsContenthash,
+  OcrId,
+} from "@nerfzael/ocr-core";
+
+export const setOcrIdAsContenthash = async (
+  domain: string,
+  ocrId: OcrId,
+  registryAddress: string,
+  signer: Signer
+): Promise<ContractTransaction> => {
   const registry = EnsRegistryContract.create(registryAddress, signer);
 
-  const resolverAddress = await registry.resolver(ethers.utils.namehash(domain));
-  
+  const resolverAddress = await registry.resolver(
+    ethers.utils.namehash(domain)
+  );
+
   const resolver = EnsResolverContract.create(resolverAddress, signer);
-  
+
   const contenthash = encodeOcrIdAsContenthash(ocrId);
   console.log("OCRID", decodeOcrIdFromContenthash(contenthash));
 
-  const tx = await resolver.setContenthash(ethers.utils.namehash(domain), contenthash);
+  const tx = await resolver.setContenthash(
+    ethers.utils.namehash(domain),
+    contenthash
+  );
 
   return tx;
 };
-

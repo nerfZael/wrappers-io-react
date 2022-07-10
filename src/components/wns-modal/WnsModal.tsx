@@ -1,22 +1,22 @@
-import './WnsModal.scss';
+import { Network } from "../../utils/Network";
+import { EnsRegistryContract } from "../../utils/ens/EnsRegistryContract";
+import { WNS_CONTRACT_ADDRESSES } from "../../utils/wns/constants";
+import { EnsResolverContract } from "../../utils/ens/EnsResolverContract";
+import { getCidFromContenthash } from "../../utils/getCidFromContenthash";
+import { WrapFifsRegistrarContract } from "../../utils/wns/WrapFifsRegistrar";
+import { labelhash } from "../../utils/ens/labelhash";
+
 import { Modal } from "react-bootstrap";
-import { useCallback, useEffect, useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import { useEthers } from '@usedapp/core';
-import { Network } from '../../utils/Network';
-import { EnsRegistryContract } from '../../utils/ens/EnsRegistryContract';
-import { ethers } from 'ethers';
-import { WNS_CONTRACT_ADDRESSES } from '../../utils/wns/constants';
-import { EnsResolverContract } from '../../utils/ens/EnsResolverContract';
-import { getCidFromContenthash } from '../../utils/getCidFromContenthash';
-import { decodeOcrIdFromContenthash, OcrId } from '@nerfzael/ocr-core';
-import { namehash } from 'ethers/lib/utils';
-import { WrapFifsRegistrarContract } from '../../utils/wns/WrapFifsRegistrar';
-import { labelhash } from '../../utils/ens/labelhash';
+import { useCallback, useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { useEthers } from "@usedapp/core";
+import { ethers } from "ethers";
+import { decodeOcrIdFromContenthash, OcrId } from "@nerfzael/ocr-core";
+import { namehash } from "ethers/lib/utils";
 
 const WnsModal: React.FC<{
-  shouldShow: boolean,
-  handleClose: () => void 
+  shouldShow: boolean;
+  handleClose: () => void;
 }> = ({ shouldShow, handleClose }) => {
   const { library: provider, chainId, account } = useEthers();
   const [wnsDomain, setWnsDomain] = useState<string | undefined>();
@@ -31,34 +31,44 @@ const WnsModal: React.FC<{
       setCanRegisterDomain(false);
       setCanClaimDomain(false);
       setDomainOwner(undefined);
-    
+
       if (!provider || !chainId || !wnsDomain || !wnsDomain.endsWith(".wrap")) {
         return;
       }
-      
-      const registry = EnsRegistryContract.create(WNS_CONTRACT_ADDRESSES[chainId].registry, provider);
+
+      const registry = EnsRegistryContract.create(
+        WNS_CONTRACT_ADDRESSES[chainId].registry,
+        provider
+      );
 
       const owner = await registry.owner(ethers.utils.namehash(wnsDomain));
       setDomainOwner(owner);
 
-      const resolverAddress = await registry.resolver(ethers.utils.namehash(wnsDomain));
-      if(resolverAddress && resolverAddress !== ethers.constants.AddressZero) {
+      const resolverAddress = await registry.resolver(
+        ethers.utils.namehash(wnsDomain)
+      );
+      if (resolverAddress && resolverAddress !== ethers.constants.AddressZero) {
         const resolver = EnsResolverContract.create(resolverAddress, provider);
-      
-        const contenthash = await resolver.contenthash(ethers.utils.namehash(wnsDomain));
+
+        const contenthash = await resolver.contenthash(
+          ethers.utils.namehash(wnsDomain)
+        );
         const savedCid = getCidFromContenthash(contenthash);
-      
-        if(savedCid) {
+
+        if (savedCid) {
           setCid(savedCid);
         } else {
           const savedOcrId = decodeOcrIdFromContenthash(contenthash);
-          if(savedOcrId) {
+          if (savedOcrId) {
             setOcrId(savedOcrId);
           }
         }
       }
-    
-      if(wnsDomain.endsWith(".dev.wrap") && owner === ethers.constants.AddressZero) {
+
+      if (
+        wnsDomain.endsWith(".dev.wrap") &&
+        owner === ethers.constants.AddressZero
+      ) {
         if (wnsDomain.split(".").length === 3) {
           setCanClaimDomain(true);
         }
@@ -71,19 +81,21 @@ const WnsModal: React.FC<{
   useEffect(() => {
     refreshDomainInfo();
   }, [refreshDomainInfo]);
-  
-  const registerDomain = async () => {
-
-  };
 
   const claimDomain = async () => {
     if (!chainId || !provider || !wnsDomain) {
       return;
     }
 
-    const fifsRegistrar = WrapFifsRegistrarContract.create(WNS_CONTRACT_ADDRESSES[chainId].fifsRegistrar, provider.getSigner());
-    
-    const tx = await fifsRegistrar.register(labelhash(wnsDomain.split(".")[0]), account);
+    const fifsRegistrar = WrapFifsRegistrarContract.create(
+      WNS_CONTRACT_ADDRESSES[chainId].fifsRegistrar,
+      provider.getSigner()
+    );
+
+    const tx = await fifsRegistrar.register(
+      labelhash(wnsDomain.split(".")[0]),
+      account
+    );
     await tx.wait();
 
     toast.success("Domain claimed successfully");
@@ -92,82 +104,75 @@ const WnsModal: React.FC<{
   };
 
   return (
-    <Modal size="lg" show={shouldShow} onHide={handleClose} contentClassName="bg-dark WnsModal">
+    <Modal
+      size="lg"
+      show={shouldShow}
+      onHide={handleClose}
+      contentClassName="bg-dark WnsModal"
+    >
       <Modal.Header closeButton>
-        <Modal.Title>
-          Wrap Name System
-        </Modal.Title>
+        <Modal.Title>Wrap Name System</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div>
-          <input 
-            className="form-control" 
-            placeholder={`WNS domain (${Network.fromChainId(chainId as number).name})...`} 
-            type="text" 
-            onChange={e => setWnsDomain(e.target.value)}
+          <input
+            className="form-control"
+            placeholder={`WNS domain (${
+              Network.fromChainId(chainId as number).name
+            })...`}
+            type="text"
+            onChange={(e) => setWnsDomain(e.target.value)}
           />
-          {
-            domainOwner && (
+          {domainOwner && (
+            <div>
+              <div>Owner: {domainOwner}</div>
+            </div>
+          )}
+          {cid && (
+            <div>
+              <div>IPFS CID: {cid}</div>
+            </div>
+          )}
+          {ocrId && (
+            <div>
               <div>
-                <div>Owner: {domainOwner}</div>
+                <span>ChainId: {ocrId.chainId}</span>
               </div>
-            )
-          }
-          {
-            cid && (
               <div>
-                <div>IPFS CID: {cid}</div>
+                <span>Protocol version: {ocrId.protocolVersion}</span>
               </div>
-            )
-          }
-          {
-            ocrId && (
               <div>
-                <div>
-                  <span>ChainId: {ocrId.chainId}</span>
-                </div>
-                <div>
-                  <span>Protocol version: {ocrId.protocolVersion}</span>
-                </div>
-                <div>
-                  <span>Contract: {ocrId.contractAddress}</span>
-                </div>
-                <div>
-                  <span>Package index: {ocrId.packageIndex}</span>
-                </div>
-                <div>
-                  <span>Start block: {ocrId.startBlock}</span>
-                </div>
-                <div>
-                  <span>End block: {ocrId.endBlock}</span>
-                </div>
+                <span>Contract: {ocrId.contractAddress}</span>
               </div>
-            )
-          }
-          {
-            wnsDomain && canRegisterDomain && (
-              <button 
-                className="btn btn-success" 
-                onClick={() => registerDomain()} 
-                disabled={!canRegisterDomain}>
-                Register
-              </button>
-            )
-          }
-          {
-            wnsDomain && canClaimDomain && (
-              <button 
-                className="btn btn-success" 
-                onClick={() => claimDomain()} 
-                disabled={!canClaimDomain}>
-                Claim
-              </button>
-            )
-          }
+              <div>
+                <span>Package index: {ocrId.packageIndex}</span>
+              </div>
+              <div>
+                <span>Start block: {ocrId.startBlock}</span>
+              </div>
+              <div>
+                <span>End block: {ocrId.endBlock}</span>
+              </div>
+            </div>
+          )}
+          {wnsDomain && canRegisterDomain && (
+            <button className="btn btn-success" disabled={!canRegisterDomain}>
+              Register
+            </button>
+          )}
+          {wnsDomain && canClaimDomain && (
+            <button
+              className="btn btn-success"
+              onClick={() => claimDomain()}
+              disabled={!canClaimDomain}
+            >
+              Claim
+            </button>
+          )}
         </div>
       </Modal.Body>
     </Modal>
   );
-}
+};
 
 export default WnsModal;

@@ -1,3 +1,32 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 80%;
+}
+
+@media (min-width: 768px) {
+  html {
+      font-size: 85%;
+  }
+}
+@media (min-width: 991px) {
+  html {
+      font-size: 90%;
+  }
+}
+@media (min-width: 1279px) {
+  html {
+      font-size: 100%;
+  }
+}
+@media (min-width: 1440px) {
+  html {
+      font-size: 105%;
+  }
+}
+
 @import "~bootstrap/scss/bootstrap";
 @import url('https://fonts.googleapis.com/css?family=Varela+Round');
 
@@ -164,4 +193,67 @@ html, body {
 
 .success-back {
   background: #04d10285;
+}
+
+.App {
+  text-align: center;
+
+  padding: 30px 30px;
+
+  .widget {
+    margin-top: 20px;
+  }
+
+  .widgets-container {
+    display: flex;
+    justify-content: space-between;
+
+    .second-column {
+      margin-left: 20px;
+      flex-grow: 1;
+    }
+  }
+}
+
+.LoadedWrapperView {
+  select {
+    option {
+      background: #255a61;
+    }
+  } 
+
+  .tab-body {
+    padding: 20px 20px 20px 20px;
+  }
+
+  .download {
+    margin-top: 20px;
+  }
+}
+
+.Tabs {
+  .nav-item {
+    :hover {
+      background: #1b3363;
+    }
+    &.active {
+      background: #1b3363;
+    }
+    cursor: pointer;
+    background: #7177ff8c;
+    .nav-link {
+      color: #ffffff;
+    }
+  }
+}
+
+.PublishWrapperModal {
+  .registry-section {
+    margin: 10px;
+  }
+  select {
+    option {
+      background: #255a61;
+    }
+  } 
 }

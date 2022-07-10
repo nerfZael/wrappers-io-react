@@ -1,25 +1,30 @@
-import { useEffect, useState } from 'react';
-import { Rinkeby, useEthers, Localhost, Ropsten, Mainnet } from '@usedapp/core';
-import { LoadedWrapper } from '../../../models/LoadedWrapper';
-import { setIpfsCidContenthash } from '../../../utils/ens/setIpfsCidContenthash';
-import { setOcrIdAsContenthash } from '../../../utils/ocr/setOcrIdAsContenthash';
-import { Network } from '../../../utils/Network';
-import { ENS_CONTRACT_ADDRESSES } from '../../../utils/ens/constants';
+import { LoadedWrapper } from "../../../models/LoadedWrapper";
+import { setIpfsCidContenthash } from "../../../utils/ens/setIpfsCidContenthash";
+import { setOcrIdAsContenthash } from "../../../utils/ocr/setOcrIdAsContenthash";
+import { Network } from "../../../utils/Network";
+import { ENS_CONTRACT_ADDRESSES } from "../../../utils/ens/constants";
 
-const getCanEnsPublish = (chainId: number | undefined, wrapper: LoadedWrapper): boolean => {
+import { Rinkeby, useEthers, Localhost, Ropsten, Mainnet } from "@usedapp/core";
+import { useEffect, useState } from "react";
+
+const getCanEnsPublish = (
+  chainId: number | undefined,
+  wrapper: LoadedWrapper
+): boolean => {
   if (!chainId) {
     return false;
   }
 
-  let hasEnsRegistry = ENS_CONTRACT_ADDRESSES[chainId.toString()]
-    && ENS_CONTRACT_ADDRESSES[chainId.toString()].registry;
+  const hasEnsRegistry =
+    ENS_CONTRACT_ADDRESSES[chainId.toString()] &&
+    ENS_CONTRACT_ADDRESSES[chainId.toString()].registry;
 
   return !!hasEnsRegistry && (!!wrapper.cid || !!wrapper.ocrId);
 };
 
 const PublishToEns: React.FC<{
-  wrapper: LoadedWrapper, 
-  setWrapper: (wrapper: LoadedWrapper) => void, 
+  wrapper: LoadedWrapper;
+  setWrapper: (wrapper: LoadedWrapper) => void;
 }> = ({ wrapper, setWrapper }) => {
   const { library: provider, chainId } = useEthers();
   const [ensDomain, setEnsDomain] = useState<string | undefined>();
@@ -40,11 +45,11 @@ const PublishToEns: React.FC<{
       return;
     }
 
-    if(wrapper.cid) {
+    if (wrapper.cid) {
       setCanPublishIpfs(true);
     }
 
-    if(wrapper.ocrId) {
+    if (wrapper.ocrId) {
       setCanPublishOcr(true);
     }
   }, [chainId, ensDomain, wrapper]);
@@ -52,11 +57,11 @@ const PublishToEns: React.FC<{
   const publishCIDToEns = async () => {
     const signer = provider?.getSigner();
 
-    if(!signer || !ensDomain || !wrapper.cid) {
+    if (!signer || !ensDomain || !wrapper.cid) {
       return;
     }
 
-    if(!chainId || !signer || !ensDomain || !wrapper.cid) {
+    if (!chainId || !signer || !ensDomain || !wrapper.cid) {
       return;
     }
 
@@ -67,7 +72,7 @@ const PublishToEns: React.FC<{
       ...wrapper,
       ensDomain: {
         name: ensDomain,
-        chainId: chainId as number
+        chainId: chainId as number,
       },
     });
   };
@@ -75,19 +80,24 @@ const PublishToEns: React.FC<{
   const publishOcrIdToEns = async () => {
     const signer = provider?.getSigner();
 
-    if(!signer || !ensDomain || !chainId || !wrapper.ocrId) {
+    if (!signer || !ensDomain || !chainId || !wrapper.ocrId) {
       return;
     }
 
     const registry = ENS_CONTRACT_ADDRESSES[chainId.toString()].registry;
-    const tx = await setOcrIdAsContenthash(ensDomain, wrapper.ocrId, registry, signer);
+    const tx = await setOcrIdAsContenthash(
+      ensDomain,
+      wrapper.ocrId,
+      registry,
+      signer
+    );
     await tx.wait();
 
     setWrapper({
       ...wrapper,
       ensDomain: {
         name: ensDomain,
-        chainId: chainId as number
+        chainId: chainId as number,
       },
     });
   };
@@ -95,48 +105,58 @@ const PublishToEns: React.FC<{
   return (
     <div className="PublishToIpfs">
       <div className="registry-section ens">
-      {
-         !(wrapper.ensDomain && chainId === wrapper.ensDomain.chainId) && (
-        <>
-          {
-            !showPublishToEns && (
-              <button className="btn btn-success" onClick={() => setShowPublishToEns(true)} disabled={!canEnsPublish}>
+        {!(wrapper.ensDomain && chainId === wrapper.ensDomain.chainId) && (
+          <>
+            {!showPublishToEns && (
+              <button
+                className="btn btn-success"
+                onClick={() => setShowPublishToEns(true)}
+                disabled={!canEnsPublish}
+              >
                 Publish to ENS on {Network.fromChainId(chainId as number).name}
               </button>
-            )
-          }
-          {
-            showPublishToEns && (
+            )}
+            {showPublishToEns && (
               <div>
-                <input className="form-control" placeholder={`ENS domain (${Network.fromChainId(chainId as number).name})...`} type="text" onChange={e => setEnsDomain(e.target.value)}/>
-                {
-                  wrapper.cid && (
-                    <button className="btn btn-success" onClick={() => publishCIDToEns()} disabled={!canPublishIpfs}>Publish IPFS CID
-                    </button>
-                  )
-                }
-                {
-                  wrapper.ocrId && (
-                    <button className="btn btn-success" onClick={() => publishOcrIdToEns()} disabled={!canPublishOcr}>Publish OCR ID
-                    </button>
-                  )
-                }
+                <input
+                  className="form-control"
+                  placeholder={`ENS domain (${
+                    Network.fromChainId(chainId as number).name
+                  })...`}
+                  type="text"
+                  onChange={(e) => setEnsDomain(e.target.value)}
+                />
+                {wrapper.cid && (
+                  <button
+                    className="btn btn-success"
+                    onClick={() => publishCIDToEns()}
+                    disabled={!canPublishIpfs}
+                  >
+                    Publish IPFS CID
+                  </button>
+                )}
+                {wrapper.ocrId && (
+                  <button
+                    className="btn btn-success"
+                    onClick={() => publishOcrIdToEns()}
+                    disabled={!canPublishOcr}
+                  >
+                    Publish OCR ID
+                  </button>
+                )}
               </div>
-            )
-          }
-        </>
-        )
-      }
-      {
-        wrapper.ensDomain && chainId === wrapper.ensDomain.chainId && (
+            )}
+          </>
+        )}
+        {wrapper.ensDomain && chainId === wrapper.ensDomain.chainId && (
           <div className="success-back round pad">
-            ENS domain: {wrapper.ensDomain.name} ({Network.fromChainId(wrapper.ensDomain.chainId).name})
+            ENS domain: {wrapper.ensDomain.name} (
+            {Network.fromChainId(wrapper.ensDomain.chainId).name})
           </div>
-        )
-      }
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default PublishToEns;

@@ -1,13 +1,13 @@
-import './OcrIdLoader.scss';
-import { useEffect, useState } from 'react';
-import { useEthers } from '@usedapp/core';
-import { ethers } from 'ethers';
-import { OcrId } from '@nerfzael/ocr-core';
-import { OcrContract } from '../../utils/ocr/OcrContract';
-import { OcrPackageInfo } from '../../models/OcrPackageInfo';
+import { OcrContract } from "../../utils/ocr/OcrContract";
+import { OcrPackageInfo } from "../../models/OcrPackageInfo";
+
+import { useEffect, useState } from "react";
+import { useEthers } from "@usedapp/core";
+import { ethers } from "ethers";
+import { OcrId } from "@nerfzael/ocr-core";
 
 const OcrIdLoader: React.FC<{
-  setOcrId: (ocrId: OcrId) => void,
+  setOcrId: (ocrId: OcrId) => void;
 }> = ({ setOcrId }) => {
   const { library: provider, chainId } = useEthers();
   const [contractAddress, setContractAddress] = useState<string | undefined>();
@@ -15,13 +15,20 @@ const OcrIdLoader: React.FC<{
 
   useEffect(() => {
     (async () => {
-      if(provider && chainId && packageIndex && contractAddress &&
-         ethers.utils.isAddress(contractAddress) && Number.isInteger(packageIndex)
-        ) {
+      if (
+        provider &&
+        chainId &&
+        packageIndex &&
+        contractAddress &&
+        ethers.utils.isAddress(contractAddress) &&
+        Number.isInteger(packageIndex)
+      ) {
         const contract = OcrContract.create(contractAddress, provider);
         const protocolVersion = await contract.PROTOCOL_VERSION();
 
-        const packageInfo: OcrPackageInfo = await contract.package(packageIndex);
+        const packageInfo: OcrPackageInfo = await contract.package(
+          packageIndex
+        );
 
         if (packageInfo.endBlock.toNumber() === 0) {
           return;
@@ -41,8 +48,18 @@ const OcrIdLoader: React.FC<{
 
   return (
     <div className="OcrIdLoader">
-      <input className="form-control" placeholder="Contract address..." type="text" onChange={e => setContractAddress(e.target.value)}/>
-      <input className="form-control" placeholder="Package index..." type="text" onChange={e => setPackageIndex(parseInt(e.target.value))}/>
+      <input
+        className="form-control"
+        placeholder="Contract address..."
+        type="text"
+        onChange={(e) => setContractAddress(e.target.value)}
+      />
+      <input
+        className="form-control"
+        placeholder="Package index..."
+        type="text"
+        onChange={(e) => setPackageIndex(parseInt(e.target.value))}
+      />
     </div>
   );
 };

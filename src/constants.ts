@@ -1,6 +1,6 @@
 export type Constants = {
-  WRAPPERS_GATEWAY_URL: string
+  WRAPPERS_GATEWAY_URL: string;
 };
 export const constants: Constants = {
-  WRAPPERS_GATEWAY_URL: "http://localhost:8081"
+  WRAPPERS_GATEWAY_URL: "http://localhost:8081",
 };

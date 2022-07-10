@@ -1,10 +1,14 @@
-import { ethers } from "ethers";
 import { getCidFromContenthash } from "./getCidFromContenthash";
 
-export const getCIDFromEnsDomain = async (ensDomain: string, provider: ethers.providers.JsonRpcProvider): Promise<string | undefined> => {
+import { ethers } from "ethers";
+
+export const getCIDFromEnsDomain = async (
+  ensDomain: string,
+  provider: ethers.providers.JsonRpcProvider
+): Promise<string | undefined> => {
   const resolver = await provider?.getResolver(ensDomain);
   const contenthash = await resolver?.getContentHash();
-  if(!contenthash) {
+  if (!contenthash) {
     return;
   }
   const cid = getCidFromContenthash(contenthash);

@@ -6,4 +6,4 @@ export type OcrPackageInfo = {
   endBlock: BigNumber;
   partCount: BigNumber;
   author: string;
-}
+};

@@ -18,10 +18,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "downlevelIteration": true
+    "jsx": "preserve",
+    "downlevelIteration": true,
+    "incremental": true
   },
   "include": [
-    "src"
+    "src",
+    "next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"
+, "pages"  ],
+  "exclude": [
+    "node_modules"
   ]
 }

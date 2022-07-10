@@ -1,28 +1,33 @@
-import { useEffect, useState } from 'react';
-import { useEthers } from '@usedapp/core';
-import { LoadedWrapper } from '../../../models/LoadedWrapper';
-import { setIpfsCidContenthash } from '../../../utils/ens/setIpfsCidContenthash';
-import { setOcrIdAsContenthash } from '../../../utils/ocr/setOcrIdAsContenthash';
-import { WNS_CONTRACT_ADDRESSES } from '../../../utils/wns/constants';
-import { Network } from '../../../utils/Network';
-import { namehash } from 'ethers/lib/utils';
-import { ethers } from 'ethers';
-import { EnsRegistryContract } from '../../../utils/ens/EnsRegistryContract';
+import { LoadedWrapper } from "../../../models/LoadedWrapper";
+import { setIpfsCidContenthash } from "../../../utils/ens/setIpfsCidContenthash";
+import { setOcrIdAsContenthash } from "../../../utils/ocr/setOcrIdAsContenthash";
+import { WNS_CONTRACT_ADDRESSES } from "../../../utils/wns/constants";
+import { Network } from "../../../utils/Network";
+import { EnsRegistryContract } from "../../../utils/ens/EnsRegistryContract";
 
-const getCanWnsPublish = (chainId: number | undefined, wrapper: LoadedWrapper): boolean => {
+import { namehash } from "ethers/lib/utils";
+import { ethers } from "ethers";
+import { useEthers } from "@usedapp/core";
+import { useEffect, useState } from "react";
+
+const getCanWnsPublish = (
+  chainId: number | undefined,
+  wrapper: LoadedWrapper
+): boolean => {
   if (!chainId) {
     return false;
   }
 
-  let hasWnsRegistry = WNS_CONTRACT_ADDRESSES[chainId.toString()]
-    && WNS_CONTRACT_ADDRESSES[chainId.toString()].registry;
+  const hasWnsRegistry =
+    WNS_CONTRACT_ADDRESSES[chainId.toString()] &&
+    WNS_CONTRACT_ADDRESSES[chainId.toString()].registry;
 
   return !!hasWnsRegistry && (!!wrapper.cid || !!wrapper.ocrId);
 };
 
 const PublishToWns: React.FC<{
-  wrapper: LoadedWrapper, 
-  setWrapper: (wrapper: LoadedWrapper) => void, 
+  wrapper: LoadedWrapper;
+  setWrapper: (wrapper: LoadedWrapper) => void;
 }> = ({ wrapper, setWrapper }) => {
   const { library: provider, chainId, account } = useEthers();
   const [wnsDomain, setWnsDomain] = useState<string | undefined>();
@@ -40,43 +45,60 @@ const PublishToWns: React.FC<{
       setCanPublishIpfs(false);
       setCanPublishIpfs(false);
 
-      if (!chainId || !provider || !account || !wnsDomain || !wnsDomain.endsWith(".wrap")) {
+      if (
+        !chainId ||
+        !provider ||
+        !account ||
+        !wnsDomain ||
+        !wnsDomain.endsWith(".wrap")
+      ) {
         return;
       }
-      
-      const registry = EnsRegistryContract.create(WNS_CONTRACT_ADDRESSES[chainId].registry, provider);
+
+      const registry = EnsRegistryContract.create(
+        WNS_CONTRACT_ADDRESSES[chainId].registry,
+        provider
+      );
 
       const owner = await registry.owner(namehash(wnsDomain));
       const resolverAddress = await registry.resolver(namehash(wnsDomain));
 
-      if (owner === account && resolverAddress !== ethers.constants.AddressZero) {
-        if(wrapper.cid) {
+      if (
+        owner === account &&
+        resolverAddress !== ethers.constants.AddressZero
+      ) {
+        if (wrapper.cid) {
           setCanPublishIpfs(true);
         }
-  
-        if(wrapper.ocrId) {
+
+        if (wrapper.ocrId) {
           setCanPublishOcr(true);
         }
-      } 
+      }
     })();
   }, [chainId, account, provider, wnsDomain, wrapper]);
 
   const publishCIDToWns = async () => {
     const signer = provider?.getSigner();
 
-    if(!chainId || !signer || !wnsDomain || !wrapper.cid) {
+    if (!chainId || !signer || !wnsDomain || !wrapper.cid) {
       return;
     }
 
     const registry = WNS_CONTRACT_ADDRESSES[chainId.toString()].registry;
-    const tx = await setIpfsCidContenthash(wnsDomain, wrapper.cid, registry, signer);
+    const tx = await setIpfsCidContenthash(
+      wnsDomain,
+      wrapper.cid,
+      registry,
+      signer
+    );
     await tx.wait();
 
     setWrapper({
       ...wrapper,
       wnsDomain: {
         name: wnsDomain,
-        chainId: chainId as number
+        chainId: chainId as number,
       },
     });
   };
@@ -84,59 +106,84 @@ const PublishToWns: React.FC<{
   const publishOcrIdToWns = async () => {
     const signer = provider?.getSigner();
 
-    if(!signer || !wnsDomain || !chainId || !wrapper.ocrId) {
+    if (!signer || !wnsDomain || !chainId || !wrapper.ocrId) {
       return;
     }
 
     const registry = WNS_CONTRACT_ADDRESSES[chainId.toString()].registry;
-    await setOcrIdAsContenthash(wnsDomain, wrapper.ocrId, registry, signer);
+    const tx = await setOcrIdAsContenthash(
+      wnsDomain,
+      wrapper.ocrId,
+      registry,
+      signer
+    );
+
+    await tx.wait();
+
+    setWrapper({
+      ...wrapper,
+      wnsDomain: {
+        name: wnsDomain,
+        chainId: chainId as number,
+      },
+    });
   };
 
   return (
     <div className="PublishToIpfs">
       <div className="registry-section wns">
-      {
-         !(wrapper.wnsDomain && chainId === wrapper.wnsDomain.chainId) && (
-        <>
-          {
-            !showPublishToWns && (
-              <button className="btn btn-success" onClick={() => setShowPublishToWns(true)} disabled={!canWnsPublish}>
+        {!(wrapper.wnsDomain && chainId === wrapper.wnsDomain.chainId) && (
+          <>
+            {!showPublishToWns && (
+              <button
+                className="btn btn-success"
+                onClick={() => setShowPublishToWns(true)}
+                disabled={!canWnsPublish}
+              >
                 Publish to WNS on {Network.fromChainId(chainId as number).name}
               </button>
-            )
-          }
-          {
-            showPublishToWns && (
+            )}
+            {showPublishToWns && (
               <div>
-                <input className="form-control" placeholder={`WNS domain (${Network.fromChainId(chainId as number).name})...`} type="text" onChange={e => setWnsDomain(e.target.value)}/>
-                {
-                  wrapper.cid && (
-                    <button className="btn btn-success" onClick={() => publishCIDToWns()} disabled={!canPublishIpfs}>Publish IPFS CID
-                    </button>
-                  )
-                }
-                {
-                  wrapper.ocrId && (
-                    <button className="btn btn-success" onClick={() => publishOcrIdToWns()} disabled={!canPublishOcr}>Publish OCR ID
-                    </button>
-                  )
-                }
+                <input
+                  className="form-control"
+                  placeholder={`WNS domain (${
+                    Network.fromChainId(chainId as number).name
+                  })...`}
+                  type="text"
+                  onChange={(e) => setWnsDomain(e.target.value)}
+                />
+                {wrapper.cid && (
+                  <button
+                    className="btn btn-success"
+                    onClick={() => publishCIDToWns()}
+                    disabled={!canPublishIpfs}
+                  >
+                    Publish IPFS CID
+                  </button>
+                )}
+                {wrapper.ocrId && (
+                  <button
+                    className="btn btn-success"
+                    onClick={() => publishOcrIdToWns()}
+                    disabled={!canPublishOcr}
+                  >
+                    Publish OCR ID
+                  </button>
+                )}
               </div>
-            )
-          }
-        </>
-        )
-      }
-      {
-        wrapper.wnsDomain && chainId === wrapper.wnsDomain.chainId && (
+            )}
+          </>
+        )}
+        {wrapper.wnsDomain && chainId === wrapper.wnsDomain.chainId && (
           <div className="success-back round pad">
-            WNS domain: {wrapper.wnsDomain.name} ({Network.fromChainId(wrapper.wnsDomain.chainId).name})
+            WNS domain: {wrapper.wnsDomain.name} (
+            {Network.fromChainId(wrapper.wnsDomain.chainId).name})
           </div>
-        )
-      }
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default PublishToWns;
