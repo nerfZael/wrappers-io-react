@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import Navigation from "../components/navigation";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import { useDropzone } from "react-dropzone";
 
 const ipfsNode = createIpfsNode({
   url: constants.WRAPPERS_GATEWAY_URL,
@@ -46,33 +47,55 @@ const WrapperPage: NextPage = () => {
     });
   }, [cid, chainId, ens, wns, ocrId]);
 
+  const result = useDropzone({ noClick: true });
+  const { acceptedFiles, getRootProps, getInputProps, isDragAccept } = result;
+
+  const dropHover = isDragAccept ? " drop-hover" : "";
+
+  console.log("isDragActive", isDragAccept);
   return (
     <>
       <Navigation></Navigation>
       <div className="page">
-        {wrapperInfo && wrapperInfo.name && (
-          <span>
-            {wrapperInfo.name} ({Network.fromChainId(chainId).name})
-          </span>
-        )}
-        {!(wrapperInfo && wrapperInfo.name) && (
-          <span>Wrapper ({Network.fromChainId(chainId).name})</span>
-        )}
+        <div
+          {...getRootProps({
+            className: `dropzone ${dropHover}`,
+          })}
+        >
+          <input {...getInputProps()} />
+          {isDragAccept && (
+            <p>
+              Drag &quot;n&quot; drop some files here, or click to select files
+            </p>
+          )}
+          {!isDragAccept && (
+            <>
+              {wrapperInfo && wrapperInfo.name && (
+                <span>
+                  {wrapperInfo.name} ({Network.fromChainId(chainId).name})
+                </span>
+              )}
+              {!(wrapperInfo && wrapperInfo.name) && (
+                <span>Wrapper ({Network.fromChainId(chainId).name})</span>
+              )}
 
-        <div>
-          <LoadWrapper
-            publishedWrapper={publishedWrapper}
-            ipfsNode={ipfsNode}
-            setLoadedWrapper={setWrapper}
-          ></LoadWrapper>
-          {wrapper && (
-            <LoadedWrapperView
-              wrapper={wrapper}
-              setWrapper={setWrapper}
-              ipfsNode={ipfsNode}
-              setLoadedWrapperInfo={setWrapperInfo}
-              setPublishedWrapper={setPublishedWrapper}
-            ></LoadedWrapperView>
+              <div>
+                <LoadWrapper
+                  publishedWrapper={publishedWrapper}
+                  ipfsNode={ipfsNode}
+                  setLoadedWrapper={setWrapper}
+                ></LoadWrapper>
+                {wrapper && (
+                  <LoadedWrapperView
+                    wrapper={wrapper}
+                    setWrapper={setWrapper}
+                    ipfsNode={ipfsNode}
+                    setLoadedWrapperInfo={setWrapperInfo}
+                    setPublishedWrapper={setPublishedWrapper}
+                  ></LoadedWrapperView>
+                )}
+              </div>
+            </>
           )}
         </div>
       </div>

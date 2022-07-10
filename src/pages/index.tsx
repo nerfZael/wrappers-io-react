@@ -1,6 +1,4 @@
-import { Network } from "../utils/Network";
 import { constants } from "../constants";
-import WnsModal from "../components/wns-modal/WnsModal";
 import PublishWrapperModal from "../components/publish-wrapper-modal/PublishWrapperModal";
 
 import { ReactElement, useEffect, useState } from "react";
@@ -65,11 +63,6 @@ const Home = ({}): ReactElement<any, any> => {
                   Load wrapper
                 </button>
               </div>
-              <div className="second-column">
-                <Link href={`/wrapper?cid=${cidToPublish}`}>
-                  <button className="btn btn-success">WNS</button>
-                </Link>
-              </div>
             </>
           )}
         </div>
@@ -85,28 +78,32 @@ const Home = ({}): ReactElement<any, any> => {
             </thead>
             <tbody>
               {indexedWrappers.map((wrapper: any, index) => (
-                <Link key={index} href={`/wrapper?cid=${wrapper.cid}`}>
-                  <tr>
-                    <td>
-                      <span>{wrapper.name}</span>
-                    </td>
-                    <td>
-                      <span>{wrapper.size}</span>
-                    </td>
-                    <td>{wrapper.cid}</td>
-                  </tr>
-                </Link>
+                // <Link key={index} href={`/wrapper?cid=${wrapper.cid}`}>
+                //   <tr>
+                //     <td>
+                //       <span>{wrapper.name}</span>
+                //     </td>
+                //     <td>
+                //       <span>{wrapper.size}</span>
+                //     </td>
+                //     <td>{wrapper.cid}</td>
+                //   </tr>
+                // </Link>
+
+                <tr key={index} onClick={() => setCidToPublish(wrapper.cid)}>
+                  <td>
+                    <span>{wrapper.name}</span>
+                  </td>
+                  <td>
+                    <span>{wrapper.size}</span>
+                  </td>
+                  <td>{wrapper.cid}</td>
+                </tr>
               ))}
             </tbody>
           </table>
         </div>
         {publishModal}
-        <WnsModal
-          shouldShow={shouldShowWnsModal}
-          handleClose={() => {
-            setShouldShowWnsModal(false);
-          }}
-        ></WnsModal>
         <ToastContainer />
       </div>
     </div>

@@ -24,14 +24,14 @@ const WrapperDeployment: React.FC<{
             wrapper={wrapper}
             setWrapper={setWrapper}
           ></PublishToEns>
-          <PublishToWns
+          {/* <PublishToWns
             wrapper={wrapper}
             setWrapper={setWrapper}
           ></PublishToWns>
           <PublishToOcr
             wrapper={wrapper}
             setWrapper={setWrapper}
-          ></PublishToOcr>
+          ></PublishToOcr> */}
         </>
       )}
     </div>

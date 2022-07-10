@@ -44,7 +44,7 @@ const Navigation: React.FC = () => {
                 <a className="nav-link">Dashboard</a>
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link href="/wrapper">
                 <a className="nav-link">Wrapper</a>
               </Link>
@@ -63,7 +63,7 @@ const Navigation: React.FC = () => {
               <a className="nav-link disabled" href="#" aria-disabled="true">
                 OCR
               </a>
-            </li>
+            </li> */}
           </ul>
           <div className="">
             {!account && (
@@ -74,10 +74,8 @@ const Navigation: React.FC = () => {
               </div>
             )}
             {account && chainId && (
-              <div className="d-flex">
-                <span className="text-nowrap">
-                  {Network.fromChainId(chainId).name}: {toPrettyHex(account)}
-                </span>
+              <div className="d-flex align-items-center">
+                <span className="text-nowrap mr-2">{toPrettyHex(account)}</span>
                 <select
                   className="form-control"
                   value={chainId}

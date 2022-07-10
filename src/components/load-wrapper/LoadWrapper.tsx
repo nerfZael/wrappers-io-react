@@ -110,11 +110,6 @@ const LoadWrapper: React.FC<{
 
   useEffect(() => {
     if (files && files.length) {
-      console.log("setLoadedWrapper", {
-        cid,
-        ensDomain,
-        ocrId,
-      });
       setLoadedWrapper({
         cid,
         ensDomain,
@@ -127,6 +122,8 @@ const LoadWrapper: React.FC<{
 
   useEffect(() => {
     (async () => {
+      setFiles([]);
+      setLoadedWrapper(undefined);
       if (
         !provider ||
         !chainId ||
@@ -136,14 +133,27 @@ const LoadWrapper: React.FC<{
         return;
       }
 
-      const registry = EnsRegistryContract.create(
-        ENS_CONTRACT_ADDRESSES[chainId].registry,
+      const readOnlyProvider = getProvider(
+        ensDomain.chainId,
+        chainId,
         provider
+      );
+
+      if (!readOnlyProvider) {
+        return;
+      }
+
+      const registry = EnsRegistryContract.create(
+        ENS_CONTRACT_ADDRESSES[ensDomain.chainId].registry,
+        readOnlyProvider
       );
 
       const resolverAddress = await registry.resolver(namehash(ensDomain.name));
       if (resolverAddress && resolverAddress !== ethers.constants.AddressZero) {
-        const resolver = EnsResolverContract.create(resolverAddress, provider);
+        const resolver = EnsResolverContract.create(
+          resolverAddress,
+          readOnlyProvider
+        );
 
         const contenthash = await resolver.contenthash(
           namehash(ensDomain.name)
@@ -232,8 +242,8 @@ const LoadWrapper: React.FC<{
               <option value="fs">File system</option>
               <option value="ipfs">IPFS</option>
               <option value="ens">ENS</option>
-              <option value="wns">WNS</option>
-              <option value="ocr">OCR</option>
+              {/* <option value="wns">WNS</option>
+              <option value="ocr">OCR</option> */}
             </select>
           )}
           {showUpload && uploadType && (
@@ -247,8 +257,8 @@ const LoadWrapper: React.FC<{
                   <input {...getInputProps()} />
                   {!files || !files.length ? (
                     <p>
-                      Drag &quot;n&quot; drop some files here, or click to
-                      select files
+                      Drag &quot;n&quot; drop the build folder here, or click to
+                      select it
                     </p>
                   ) : (
                     <></>

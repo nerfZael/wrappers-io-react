@@ -43,14 +43,8 @@ const PublishWrapperModal: React.FC<{
     >
       <Modal.Header closeButton>
         <Modal.Title>
-          {wrapperInfo && wrapperInfo.name && (
-            <span>
-              {wrapperInfo.name} ({Network.fromChainId(chainId).name})
-            </span>
-          )}
-          {!(wrapperInfo && wrapperInfo.name) && (
-            <span>Wrapper ({Network.fromChainId(chainId).name})</span>
-          )}
+          {wrapperInfo && wrapperInfo.name && <span>{wrapperInfo.name}</span>}
+          {!(wrapperInfo && wrapperInfo.name) && <span>Load wrapper</span>}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

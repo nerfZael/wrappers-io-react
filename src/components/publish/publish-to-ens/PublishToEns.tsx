@@ -117,7 +117,7 @@ const PublishToEns: React.FC<{
               </button>
             )}
             {showPublishToEns && (
-              <div>
+              <div className="d-flex">
                 <input
                   className="form-control"
                   placeholder={`ENS domain (${
@@ -128,7 +128,7 @@ const PublishToEns: React.FC<{
                 />
                 {wrapper.cid && (
                   <button
-                    className="btn btn-success"
+                    className="btn btn-success ml-1 text-nowrap"
                     onClick={() => publishCIDToEns()}
                     disabled={!canPublishIpfs}
                   >
@@ -137,7 +137,7 @@ const PublishToEns: React.FC<{
                 )}
                 {wrapper.ocrId && (
                   <button
-                    className="btn btn-success"
+                    className="btn btn-success text-nowrap ml-1"
                     onClick={() => publishOcrIdToEns()}
                     disabled={!canPublishOcr}
                   >

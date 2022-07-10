@@ -99,6 +99,13 @@ html, body {
   }
 }
 
+.clickable {
+  cursor: pointer;
+  &:hover {
+    background-color: #7d9e3063;
+  }
+}
+
 .widget-border {
   border: 1px solid rgb(242, 242, 242);
 }
@@ -230,13 +237,13 @@ html, body {
   color: #ffffff;
 }
 
-.LoadedWrapperView {
-  select {
-    option {
-      background: #255a61;
-    }
-  } 
+select {
+  option {
+    background: #255a61;
+  }
+} 
 
+.LoadedWrapperView {
   .download {
     margin-top: 20px;
   }
@@ -295,4 +302,20 @@ pre {
 
 pre code {
   font-size: 18px !important;
+}
+
+.ml-1 {
+  margin-left: 5px !important;
+}
+
+.mr-1 {
+  margin-right: 5px !important;
+}
+
+.ml-2 {
+  margin-left: 10px !important;
+}
+
+.mr-2 {
+  margin-right: 10px !important;
 }

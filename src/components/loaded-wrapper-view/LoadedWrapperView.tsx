@@ -56,12 +56,11 @@ const LoadedWrapperView: React.FC<{
       const abi = manifest.abi;
 
       const schema = renderSchema(abi, false).trim();
-      console.log(schema.trim());
 
       setWrapperInfo({
         name: manifest.name,
         abi: abi,
-        schema: schema ? escapeHTML(schema) : undefined,
+        schema: schema,
         dependencies: abi ? abi.importedModuleTypes.map((x) => x.uri) : [],
         methods: abi && abi.moduleType ? abi.moduleType.methods : undefined,
       });
@@ -99,7 +98,7 @@ const LoadedWrapperView: React.FC<{
           >
             {selectedTab === "Files" && (
               <>
-                <div className="medium">
+                <div className="">
                   <table className="table" cellSpacing="3" cellPadding="3">
                     <thead>
                       <tr>
@@ -141,18 +140,18 @@ const LoadedWrapperView: React.FC<{
               </>
             )}
             {selectedTab === "Methods" && wrapperInfo?.methods && (
-              <div className="medium">
+              <div className="">
                 {wrapperInfo.methods.map((x) => (
-                  <div key={x.name}>
+                  <div className="p-2" key={x.name}>
                     <span>{x.name}</span>
                   </div>
                 ))}
               </div>
             )}
             {selectedTab === "Dependencies" && (
-              <div className="medium">
+              <div className="">
                 {wrapperInfo?.dependencies.map((wrapUri: string) => (
-                  <div key={wrapUri}>
+                  <div className="clickable p-2" key={wrapUri}>
                     <span
                       onClick={async () => {
                         if (!provider) {
@@ -178,6 +177,15 @@ const LoadedWrapperView: React.FC<{
                               },
                             });
                           }
+                        } else if (wrapUri.startsWith("wrap://ipfs/")) {
+                          const cid = wrapUri.slice(
+                            "wrap://ipfs/".length,
+                            wrapUri.length
+                          );
+
+                          setPublishedWrapper({
+                            cid,
+                          });
                         }
                       }}
                     >
@@ -188,7 +196,7 @@ const LoadedWrapperView: React.FC<{
                 {wrapperInfo &&
                   !(
                     wrapperInfo.dependencies && wrapperInfo.dependencies.length
-                  ) && <div className="medium">No dependencies</div>}
+                  ) && <div className="">No dependencies</div>}
               </div>
             )}
             {selectedTab === "Schema" && wrapperInfo?.schema && (
