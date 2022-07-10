@@ -141,13 +141,13 @@ html, body {
       rgba(134, 168, 231, 0.2) 58.46%,
       rgba(145, 234, 228, 0.2) 97.05%
     );  
+}
 
-  .table {
-    background-color: #1a1b1a52;
-    color: #fff;
-    th, td {
-      border-top: none;
-    }
+.table {
+  background-color: #1a1b1a52;
+  color: #fff;
+  th, td {
+    border-top: none;
   }
 }
 
@@ -195,7 +195,7 @@ html, body {
   background: #04d10285;
 }
 
-.App {
+.page {
   text-align: center;
 
   padding: 30px 30px;
@@ -215,16 +215,27 @@ html, body {
   }
 }
 
+.nav-link {
+  color: #ffffff;
+  &:hover {
+    color: #41d0ff;
+  }
+}
+
+.navbar {
+  background: #1f2b32;
+}
+
+.navbar-brand {
+  color: #ffffff;
+}
+
 .LoadedWrapperView {
   select {
     option {
       background: #255a61;
     }
   } 
-
-  .tab-body {
-    padding: 20px 20px 20px 20px;
-  }
 
   .download {
     margin-top: 20px;
@@ -256,4 +267,32 @@ html, body {
       background: #255a61;
     }
   } 
+}
+
+.code-back {
+  background: #2b2b2b;
+}
+
+.padding-0 {
+  padding: 0 !important;
+}
+
+.margin-0 {
+  padding: 0 !important;
+}
+
+.padding-20 {
+  padding: 20px !important;
+}
+
+.medium {
+  max-width: 600px;
+}
+
+pre {
+  margin-top: 0 !important;
+}
+
+pre code {
+  font-size: 18px !important;
 }

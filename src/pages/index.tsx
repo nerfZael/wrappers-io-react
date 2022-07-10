@@ -1,36 +1,115 @@
-import App from "./App";
+import { Network } from "../utils/Network";
+import { constants } from "../constants";
+import WnsModal from "../components/wns-modal/WnsModal";
+import PublishWrapperModal from "../components/publish-wrapper-modal/PublishWrapperModal";
 
-import {
-  Config,
-  DAppProvider,
-  Mainnet,
-  Rinkeby,
-  Ropsten,
-  Polygon,
-  Localhost,
-} from "@usedapp/core";
+import { ReactElement, useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import { useEthers } from "@usedapp/core";
+import axios from "axios";
+import Navigation from "../components/navigation";
 import "react-app-polyfill/stable";
 import "react-app-polyfill/ie11";
 import "core-js/features/array/find";
 import "core-js/features/array/includes";
 import "core-js/features/number/is-nan";
-import type { NextPage } from "next";
+import Link from "next/link";
 
-const usedappConfig: Config = {
-  autoConnect: true,
-  networks: [Mainnet, Rinkeby, Ropsten, Polygon, Localhost],
-  multicallAddresses: {
-    [Localhost.chainId]: "0x0000000000000000000000000000000000000000",
-  },
-};
+const Home = ({}): ReactElement<any, any> => {
+  const {
+    account,
+    activateBrowserWallet,
+    library: provider,
+    chainId,
+  } = useEthers();
+  const [indexedWrappers, setIndexedWrappers] = useState<any[]>([]);
+  const [cidToPublish, setCidToPublish] = useState<string | undefined>();
+  const [shouldShowPublishModal, setShouldShowPublishModal] = useState(false);
+  const [shouldShowWnsModal, setShouldShowWnsModal] = useState(false);
 
-const Home: NextPage = () => {
+  useEffect(() => {
+    axios
+      .get(`${constants.WRAPPERS_GATEWAY_URL}/pins?json=true`)
+      .then((result) => {
+        setIndexedWrappers(result.data);
+      });
+  }, []);
+
+  const publishModal =
+    cidToPublish || shouldShowPublishModal ? (
+      <PublishWrapperModal
+        publishedCID={cidToPublish}
+        handleClose={() => {
+          setCidToPublish(undefined);
+          setShouldShowPublishModal(false);
+        }}
+      />
+    ) : (
+      ""
+    );
+
   return (
-    <>
-      <DAppProvider config={usedappConfig}>
-        <App />
-      </DAppProvider>
-    </>
+    <div>
+      <Navigation></Navigation>
+      <div className="page">
+        <h1>Dashboard</h1>
+
+        <div className="widgets-container">
+          {account && (
+            <>
+              <div className="second-column">
+                <button
+                  className="btn btn-success"
+                  onClick={() => setShouldShowPublishModal(true)}
+                >
+                  Load wrapper
+                </button>
+              </div>
+              <div className="second-column">
+                <Link href={`/wrapper?cid=${cidToPublish}`}>
+                  <button className="btn btn-success">WNS</button>
+                </Link>
+              </div>
+            </>
+          )}
+        </div>
+
+        <div className="widget">
+          <table className="table" cellSpacing="3" cellPadding="3">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>CID</th>
+              </tr>
+            </thead>
+            <tbody>
+              {indexedWrappers.map((wrapper: any, index) => (
+                <Link key={index} href={`/wrapper?cid=${wrapper.cid}`}>
+                  <tr>
+                    <td>
+                      <span>{wrapper.name}</span>
+                    </td>
+                    <td>
+                      <span>{wrapper.size}</span>
+                    </td>
+                    <td>{wrapper.cid}</td>
+                  </tr>
+                </Link>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {publishModal}
+        <WnsModal
+          shouldShow={shouldShowWnsModal}
+          handleClose={() => {
+            setShouldShowWnsModal(false);
+          }}
+        ></WnsModal>
+        <ToastContainer />
+      </div>
+    </div>
   );
 };
 
