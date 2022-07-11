@@ -2,7 +2,7 @@ import { LoadedWrapper } from "../../../models/LoadedWrapper";
 import { publishFilesToOcr } from "../../../utils/ocr/publishFilesToOcr";
 import { OcrContract } from "../../../utils/ocr/OcrContract";
 import { Network } from "../../../utils/Network";
-import { OCR_CONTRACT_ADDRESSES } from "../../../utils/ocr/constants";
+import { OCR_CONTRACT_ADDRESSES } from "../../../constants";
 
 import { ethers } from "ethers";
 import { Rinkeby, useEthers, Localhost, Polygon } from "@usedapp/core";

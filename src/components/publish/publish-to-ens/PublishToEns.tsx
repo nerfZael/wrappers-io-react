@@ -2,7 +2,7 @@ import { LoadedWrapper } from "../../../models/LoadedWrapper";
 import { setIpfsCidContenthash } from "../../../utils/ens/setIpfsCidContenthash";
 import { setOcrIdAsContenthash } from "../../../utils/ocr/setOcrIdAsContenthash";
 import { Network } from "../../../utils/Network";
-import { ENS_CONTRACT_ADDRESSES } from "../../../utils/ens/constants";
+import { ENS_CONTRACT_ADDRESSES } from "../../../constants";
 
 import { Rinkeby, useEthers, Localhost, Ropsten, Mainnet } from "@usedapp/core";
 import { useEffect, useState } from "react";

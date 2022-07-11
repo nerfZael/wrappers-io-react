@@ -2,21 +2,20 @@ import { Network } from "../utils/Network";
 import LoadedWrapperView from "../components/loaded-wrapper-view/LoadedWrapperView";
 import { LoadedWrapper } from "../models/LoadedWrapper";
 import LoadWrapper from "../components/load-wrapper/LoadWrapper";
-import { constants } from "../constants";
 import { WrapperInfo } from "../models/WrapperInfo";
 import { PublishedWrapper } from "../models/PublishedWrapper";
 import Navigation from "../components/navigation";
+import { WRAPPERS_GATEWAY_URL } from "../constants";
 
 import { create as createIpfsNode } from "ipfs-http-client";
 import { useEthers } from "@usedapp/core";
-import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useDropzone } from "react-dropzone";
 
 const ipfsNode = createIpfsNode({
-  url: constants.WRAPPERS_GATEWAY_URL,
+  url: WRAPPERS_GATEWAY_URL,
 });
 const WrapperPage: NextPage = () => {
   const router = useRouter();

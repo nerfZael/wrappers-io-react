@@ -1,6 +1,6 @@
-import { constants } from "../constants";
 import PublishWrapperModal from "../components/publish-wrapper-modal/PublishWrapperModal";
 import Navigation from "../components/navigation";
+import { WRAPPERS_GATEWAY_URL } from "../constants";
 
 import { ReactElement, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -20,11 +20,9 @@ const Home = (): ReactElement<any, any> => {
   const [shouldShowWnsModal, setShouldShowWnsModal] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`${constants.WRAPPERS_GATEWAY_URL}/pins?json=true`)
-      .then((result) => {
-        setIndexedWrappers(result.data);
-      });
+    axios.get(`${WRAPPERS_GATEWAY_URL}/pins?json=true`).then((result) => {
+      setIndexedWrappers(result.data);
+    });
   }, []);
 
   const publishModal =

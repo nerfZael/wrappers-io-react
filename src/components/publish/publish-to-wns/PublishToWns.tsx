@@ -1,9 +1,9 @@
 import { LoadedWrapper } from "../../../models/LoadedWrapper";
 import { setIpfsCidContenthash } from "../../../utils/ens/setIpfsCidContenthash";
 import { setOcrIdAsContenthash } from "../../../utils/ocr/setOcrIdAsContenthash";
-import { WNS_CONTRACT_ADDRESSES } from "../../../utils/wns/constants";
 import { Network } from "../../../utils/Network";
 import { EnsRegistryContract } from "../../../utils/ens/EnsRegistryContract";
+import { WNS_CONTRACT_ADDRESSES } from "../../../constants";
 
 import { namehash } from "ethers/lib/utils";
 import { ethers } from "ethers";

@@ -1,18 +1,17 @@
 import { Network } from "../../utils/Network";
 import { EnsRegistryContract } from "../../utils/ens/EnsRegistryContract";
-import { WNS_CONTRACT_ADDRESSES } from "../../utils/wns/constants";
 import { EnsResolverContract } from "../../utils/ens/EnsResolverContract";
 import { getCidFromContenthash } from "../../utils/getCidFromContenthash";
 import { WrapFifsRegistrarContract } from "../../utils/wns/WrapFifsRegistrar";
 import { labelhash } from "../../utils/ens/labelhash";
+import { WNS_CONTRACT_ADDRESSES } from "../../constants";
 
 import { Modal } from "react-bootstrap";
 import { useCallback, useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
 import { useEthers } from "@usedapp/core";
 import { ethers } from "ethers";
 import { decodeOcrIdFromContenthash, OcrId } from "@nerfzael/ocr-core";
-import { namehash } from "ethers/lib/utils";
+import { toast } from "react-toastify";
 
 const WnsModal: React.FC<{
   shouldShow: boolean;

@@ -9,10 +9,12 @@ import OcrIdLoader from "../ocr-id-loader/OcrIdLoader";
 import { getFilesByOcrId } from "../../utils/ocr/getFilesByOcrId";
 import { EnsRegistryContract } from "../../utils/ens/EnsRegistryContract";
 import { EnsResolverContract } from "../../utils/ens/EnsResolverContract";
-import { ENS_CONTRACT_ADDRESSES } from "../../utils/ens/constants";
-import { WNS_CONTRACT_ADDRESSES } from "../../utils/wns/constants";
 import { getProvider } from "../../utils/getProvider";
 import { PublishedWrapper } from "../../models/PublishedWrapper";
+import {
+  ENS_CONTRACT_ADDRESSES,
+  WNS_CONTRACT_ADDRESSES,
+} from "../../constants";
 
 import { ethers } from "ethers";
 import { arrayify, namehash } from "ethers/lib/utils";

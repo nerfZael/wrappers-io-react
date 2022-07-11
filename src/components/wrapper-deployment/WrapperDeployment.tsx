@@ -1,7 +1,5 @@
 import PublishToIpfs from "../publish/publish-to-ipfs/PublishToIpfs";
 import PublishToEns from "../publish/publish-to-ens/PublishToEns";
-import PublishToWns from "../publish/publish-to-wns/PublishToWns";
-import PublishToOcr from "../publish/publish-to-ocr/PublishToOcr";
 import { LoadedWrapper } from "../../models/LoadedWrapper";
 
 import { IPFSHTTPClient } from "ipfs-http-client";

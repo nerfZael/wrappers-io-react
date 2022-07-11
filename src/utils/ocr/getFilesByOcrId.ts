@@ -1,10 +1,13 @@
 import { fetchPackageDataV1 } from "./fetchPackageDataV1";
-import { OCR_BYTES_FOR_FILE_PATH, OCR_BYTES_FOR_FILE_SIZE } from "./constants";
 
 import { ethers } from "ethers";
 import { decodeFiles } from "@nerfzael/encoding";
 import { OcrId } from "@nerfzael/ocr-core";
 import { InMemoryFile } from "@nerfzael/encoding";
+import {
+  OCR_BYTES_FOR_FILE_PATH,
+  OCR_BYTES_FOR_FILE_SIZE,
+} from "../../constants";
 
 export const getFilesByOcrId = async (
   ocrId: OcrId,
