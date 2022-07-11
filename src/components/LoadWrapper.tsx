@@ -1,29 +1,26 @@
-import { getCidFromContenthash } from "../../utils/getCidFromContenthash";
-import { stripBasePath } from "../../utils/stripBasePath";
-import { isCID } from "../../utils/isCID";
-import { loadFilesFromIpfs } from "../../utils/loadFilesFromIpfs";
-import { LoadedWrapper } from "../../models/LoadedWrapper";
-import { EnsDomain } from "../../models/EnsDomain";
-import { Network } from "../../utils/Network";
-import OcrIdLoader from "../ocr-id-loader/OcrIdLoader";
-import { getFilesByOcrId } from "../../utils/ocr/getFilesByOcrId";
-import { EnsRegistryContract } from "../../utils/ens/EnsRegistryContract";
-import { EnsResolverContract } from "../../utils/ens/EnsResolverContract";
-import { getProvider } from "../../utils/getProvider";
-import { PublishedWrapper } from "../../models/PublishedWrapper";
-import {
-  ENS_CONTRACT_ADDRESSES,
-  WNS_CONTRACT_ADDRESSES,
-} from "../../constants";
+import { ENS_CONTRACT_ADDRESSES, WNS_CONTRACT_ADDRESSES } from "../constants";
+import { EnsDomain } from "../models/EnsDomain";
+import { LoadedWrapper } from "../models/LoadedWrapper";
+import { PublishedWrapper } from "../models/PublishedWrapper";
+import { EnsRegistryContract } from "../utils/ens/EnsRegistryContract";
+import { EnsResolverContract } from "../utils/ens/EnsResolverContract";
+import { getCidFromContenthash } from "../utils/getCidFromContenthash";
+import { getProvider } from "../utils/getProvider";
+import { isCID } from "../utils/isCID";
+import { loadFilesFromIpfs } from "../utils/loadFilesFromIpfs";
+import { getFilesByOcrId } from "../utils/ocr/getFilesByOcrId";
+import { stripBasePath } from "../utils/stripBasePath";
+import OcrIdLoader from "./OcrIdLoader";
+import { Network } from "../utils/Network";
 
-import { ethers } from "ethers";
-import { arrayify, namehash } from "ethers/lib/utils";
-import { decodeOcrIdFromContenthash, OcrId } from "@nerfzael/ocr-core";
-import { IPFSHTTPClient } from "ipfs-http-client";
-import { useDropzone } from "react-dropzone";
-import { useCall, useEthers } from "@usedapp/core";
-import { InMemoryFile } from "@nerfzael/encoding";
 import { useEffect, useState } from "react";
+import { InMemoryFile } from "@nerfzael/encoding";
+import { useEthers } from "@usedapp/core";
+import { useDropzone } from "react-dropzone";
+import { IPFSHTTPClient } from "ipfs-http-client";
+import { decodeOcrIdFromContenthash, OcrId } from "@nerfzael/ocr-core";
+import { arrayify, namehash } from "ethers/lib/utils";
+import { ethers } from "ethers";
 
 const readFile = (file: File): Promise<InMemoryFile> => {
   return new Promise<InMemoryFile>((resolve, reject) => {

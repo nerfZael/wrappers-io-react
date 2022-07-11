@@ -1,11 +1,11 @@
 import { Network } from "../utils/Network";
 import LoadedWrapperView from "../components/LoadedWrapperView";
 import { LoadedWrapper } from "../models/LoadedWrapper";
-import LoadWrapper from "../components/load-wrapper/LoadWrapper";
 import { WrapperInfo } from "../models/WrapperInfo";
 import { PublishedWrapper } from "../models/PublishedWrapper";
 import Navigation from "../components/navigation";
 import { WRAPPERS_GATEWAY_URL } from "../constants";
+import LoadWrapper from "../components/LoadWrapper";
 
 import { create as createIpfsNode } from "ipfs-http-client";
 import { useEthers } from "@usedapp/core";

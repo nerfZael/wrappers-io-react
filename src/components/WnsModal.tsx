@@ -1,17 +1,17 @@
-import { Network } from "../../utils/Network";
-import { EnsRegistryContract } from "../../utils/ens/EnsRegistryContract";
-import { EnsResolverContract } from "../../utils/ens/EnsResolverContract";
-import { getCidFromContenthash } from "../../utils/getCidFromContenthash";
-import { WrapFifsRegistrarContract } from "../../utils/wns/WrapFifsRegistrar";
-import { labelhash } from "../../utils/ens/labelhash";
-import { WNS_CONTRACT_ADDRESSES } from "../../constants";
+import { Network } from "../utils/Network";
+import { WNS_CONTRACT_ADDRESSES } from "../constants";
+import { EnsRegistryContract } from "../utils/ens/EnsRegistryContract";
+import { EnsResolverContract } from "../utils/ens/EnsResolverContract";
+import { labelhash } from "../utils/ens/labelhash";
+import { getCidFromContenthash } from "../utils/getCidFromContenthash";
+import { WrapFifsRegistrarContract } from "../utils/wns/WrapFifsRegistrar";
 
-import { Modal } from "react-bootstrap";
-import { useCallback, useEffect, useState } from "react";
-import { useEthers } from "@usedapp/core";
-import { ethers } from "ethers";
-import { decodeOcrIdFromContenthash, OcrId } from "@nerfzael/ocr-core";
 import { toast } from "react-toastify";
+import { decodeOcrIdFromContenthash, OcrId } from "@nerfzael/ocr-core";
+import { ethers } from "ethers";
+import { useEthers } from "@usedapp/core";
+import { useCallback, useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
 
 const WnsModal: React.FC<{
   shouldShow: boolean;
