@@ -1,5 +1,5 @@
-import { OcrContract } from "../../utils/ocr/OcrContract";
-import { OcrPackageInfo } from "../../models/OcrPackageInfo";
+import { OcrPackageInfo } from "../models/OcrPackageInfo";
+import { OcrContract } from "../utils/ocr/OcrContract";
 
 import { useEffect, useState } from "react";
 import { useEthers } from "@usedapp/core";

@@ -1,6 +1,6 @@
-import PublishToIpfs from "../publish/publish-to-ipfs/PublishToIpfs";
-import PublishToEns from "../publish/publish-to-ens/PublishToEns";
-import { LoadedWrapper } from "../../models/LoadedWrapper";
+import PublishToIpfs from "./publish/publish-to-ipfs/PublishToIpfs";
+import PublishToEns from "./publish/publish-to-ens/PublishToEns";
+import { LoadedWrapper } from "../models/LoadedWrapper";
 
 import { IPFSHTTPClient } from "ipfs-http-client";
 

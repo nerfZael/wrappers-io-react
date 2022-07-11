@@ -1,4 +1,4 @@
-import PublishWrapperModal from "../components/publish-wrapper-modal/PublishWrapperModal";
+import PublishWrapperModal from "../components/PublishWrapperModal";
 import Navigation from "../components/navigation";
 import { WRAPPERS_GATEWAY_URL } from "../constants";
 

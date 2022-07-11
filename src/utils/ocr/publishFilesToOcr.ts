@@ -1,12 +1,12 @@
 import { publishDataToOcr } from "./publishDataToOcr";
-
-import { encodeFiles, InMemoryFile } from "@nerfzael/encoding";
-import { OcrId } from "@nerfzael/ocr-core";
-import { Signer } from "ethers";
 import {
   OCR_BYTES_FOR_FILE_PATH,
   OCR_BYTES_FOR_FILE_SIZE,
 } from "../../constants";
+
+import { encodeFiles, InMemoryFile } from "@nerfzael/encoding";
+import { OcrId } from "@nerfzael/ocr-core";
+import { Signer } from "ethers";
 
 export const publishFilesToOcr = async (
   files: InMemoryFile[],

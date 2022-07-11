@@ -1,5 +1,5 @@
 import { Network } from "../utils/Network";
-import LoadedWrapperView from "../components/loaded-wrapper-view/LoadedWrapperView";
+import LoadedWrapperView from "../components/LoadedWrapperView";
 import { LoadedWrapper } from "../models/LoadedWrapper";
 import LoadWrapper from "../components/load-wrapper/LoadWrapper";
 import { WrapperInfo } from "../models/WrapperInfo";

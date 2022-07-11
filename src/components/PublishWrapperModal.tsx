@@ -1,9 +1,9 @@
-import LoadedWrapperView from "../loaded-wrapper-view/LoadedWrapperView";
-import { LoadedWrapper } from "../../models/LoadedWrapper";
+import LoadedWrapperView from "./LoadedWrapperView";
+import { LoadedWrapper } from "../models/LoadedWrapper";
 import LoadWrapper from "../load-wrapper/LoadWrapper";
-import { WrapperInfo } from "../../models/WrapperInfo";
-import { PublishedWrapper } from "../../models/PublishedWrapper";
-import { WRAPPERS_GATEWAY_URL } from "../../constants";
+import { WrapperInfo } from "../models/WrapperInfo";
+import { PublishedWrapper } from "../models/PublishedWrapper";
+import { WRAPPERS_GATEWAY_URL } from "../constants";
 
 import { create as createIpfsNode } from "ipfs-http-client";
 import { useEthers } from "@usedapp/core";

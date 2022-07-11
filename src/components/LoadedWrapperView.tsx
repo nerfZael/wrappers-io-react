@@ -1,11 +1,10 @@
-import Tabs from "../tabs/Tabs";
-import { downloadFilesAsZip } from "../../utils/downloadFilesAsZip";
-import { LoadedWrapper } from "../../models/LoadedWrapper";
-import { WrapperInfo } from "../../models/WrapperInfo";
-import { toPrettyNumber } from "../../utils/toPrettyNumber";
-import { escapeHTML } from "../../utils/escapeHTML";
-import WrapperDeployment from "../wrapper-deployment/WrapperDeployment";
-import { PublishedWrapper } from "../../models/PublishedWrapper";
+import Tabs from "./shared/Tabs";
+import { downloadFilesAsZip } from "../utils/downloadFilesAsZip";
+import { LoadedWrapper } from "../models/LoadedWrapper";
+import { WrapperInfo } from "../models/WrapperInfo";
+import { toPrettyNumber } from "../utils/toPrettyNumber";
+import WrapperDeployment from "./WrapperDeployment";
+import { PublishedWrapper } from "../models/PublishedWrapper";
 
 import { IPFSHTTPClient } from "ipfs-http-client";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
