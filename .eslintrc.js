@@ -38,6 +38,7 @@ module.exports = {
     "prettier/prettier": ["error"],
     "spaced-comment": ["error", "always", { markers: ["/"] }],
     "@typescript-eslint/explicit-module-boundary-types": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/member-ordering": [
       "error",
       {
