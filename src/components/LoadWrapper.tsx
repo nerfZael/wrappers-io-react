@@ -1,4 +1,4 @@
-import { ENS_CONTRACT_ADDRESSES, WNS_CONTRACT_ADDRESSES } from "../constants";
+import { ETH_PROVIDERS, WNS_CONTRACT_ADDRESSES } from "../constants";
 import { EnsDomain } from "../models/EnsDomain";
 import { LoadedWrapper } from "../models/LoadedWrapper";
 import { PublishedWrapper } from "../models/PublishedWrapper";
@@ -12,6 +12,8 @@ import { getFilesByOcrId } from "../utils/ocr/getFilesByOcrId";
 import { stripBasePath } from "../utils/stripBasePath";
 import OcrIdLoader from "./OcrIdLoader";
 import { Network } from "../utils/Network";
+import { fetchCidOrOcrId } from "../utils/ens/fetchCidOrOcrId";
+import { useDebouncedEffect } from "../utils/useDebouncedEffect";
 
 import { useEffect, useState } from "react";
 import { InMemoryFile } from "@nerfzael/encoding";
@@ -56,6 +58,9 @@ const LoadWrapper: React.FC<{
   const [wnsDomain, setWnsDomain] = useState<EnsDomain | undefined>();
   const [ocrId, setOcrId] = useState<OcrId>();
   const [hasLoadedWrapper, setHasLoadedWrapper] = useState<boolean>(false);
+  const [foundEnsDomains, setFoundEnsDomains] = useState<
+    { cid?: string; ocrId?: OcrId; chainId: number }[] | undefined
+  >();
 
   useEffect(() => {
     if (publishedWrapper) {
@@ -119,57 +124,50 @@ const LoadWrapper: React.FC<{
     }
   }, [files, cid, ensDomain, ocrId, setLoadedWrapper]);
 
-  useEffect(() => {
-    (async () => {
-      setFiles([]);
-      setLoadedWrapper(undefined);
-      if (
-        !provider ||
-        !chainId ||
-        !ensDomain ||
-        !ensDomain.name.endsWith(".eth")
-      ) {
-        return;
-      }
-
-      const readOnlyProvider = getProvider(
-        ensDomain.chainId,
-        chainId,
-        provider
-      );
-
-      if (!readOnlyProvider) {
-        return;
-      }
-
-      const registry = EnsRegistryContract.create(
-        ENS_CONTRACT_ADDRESSES[ensDomain.chainId].registry,
-        readOnlyProvider
-      );
-
-      const resolverAddress = await registry.resolver(namehash(ensDomain.name));
-      if (resolverAddress && resolverAddress !== ethers.constants.AddressZero) {
-        const resolver = EnsResolverContract.create(
-          resolverAddress,
-          readOnlyProvider
-        );
-
-        const contenthash = await resolver.contenthash(
-          namehash(ensDomain.name)
-        );
-        const savedCid = getCidFromContenthash(contenthash);
-
-        if (savedCid) {
-          setCID(savedCid);
-        } else {
-          const savedOcrId = decodeOcrIdFromContenthash(arrayify(contenthash));
-          if (savedOcrId) {
-            setOcrId(savedOcrId);
-          }
+  useDebouncedEffect(
+    () => {
+      (async () => {
+        setFiles([]);
+        setLoadedWrapper(undefined);
+        if (
+          !provider ||
+          !chainId ||
+          !ensDomain ||
+          !ensDomain.name.endsWith(".eth")
+        ) {
+          return;
         }
-      }
-    })();
-  }, [chainId, provider, ensDomain]);
+
+        const chainIds = Object.keys(ETH_PROVIDERS);
+
+        const promises = chainIds.map(async (x: any) => {
+          const providerUrl = ETH_PROVIDERS[x as number];
+          const provider = ethers.getDefaultProvider(providerUrl);
+          const result = await fetchCidOrOcrId(
+            ensDomain,
+            x as number,
+            provider
+          );
+          return {
+            ...result,
+            chainId: parseInt(x),
+          };
+        });
+
+        const results = await Promise.all(promises);
+
+        const found = results.filter(
+          (x) => x !== undefined && (x.cid || x.ocrId)
+        );
+
+        if (found.length) {
+          setFoundEnsDomains(found);
+        }
+      })();
+    },
+    [chainId, provider, ensDomain, setLoadedWrapper],
+    500
+  );
 
   useEffect(() => {
     (async () => {
@@ -331,6 +329,38 @@ const LoadWrapper: React.FC<{
               </button>
             )}
           </div>
+          {foundEnsDomains && foundEnsDomains.length > 0 && (
+            <div>
+              {foundEnsDomains.map((x, i) => (
+                <>
+                  {x.cid && (
+                    <div
+                      className="success-back round pad pointer"
+                      key={i}
+                      onClick={() => setCID(x.cid)}
+                    >
+                      <span>
+                        {Network.fromChainId(x.chainId).label} - IPFS CID:{" "}
+                        {x.cid}
+                      </span>
+                    </div>
+                  )}
+                  {x.ocrId && (
+                    <div
+                      className="success-back round pad pointer"
+                      key={i}
+                      onClick={() => setOcrId(x.ocrId)}
+                    >
+                      <span>
+                        {Network.fromChainId(x.chainId).label} - OCR ID:{" "}
+                        {x.ocrId.packageIndex}
+                      </span>
+                    </div>
+                  )}
+                </>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </>
