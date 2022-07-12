@@ -64,7 +64,10 @@ const Home = (): ReactElement<any, any> => {
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Manifest Version</th>
+                <th>Type</th>
                 <th>Size</th>
+                <th>Indexes</th>
                 <th>CID</th>
               </tr>
             </thead>
@@ -87,7 +90,20 @@ const Home = (): ReactElement<any, any> => {
                     <span>{wrapper.name}</span>
                   </td>
                   <td>
+                    <span>{wrapper.version}</span>
+                  </td>
+                  <td>
+                    <span>{wrapper.type}</span>
+                  </td>
+                  <td>
                     <span>{wrapper.size}</span>
+                  </td>
+                  <td>
+                    <span>
+                      {wrapper.indexes.reduce(
+                        (a: string, b: string) => a + ", " + b
+                      )}
+                    </span>
                   </td>
                   <td>{wrapper.cid}</td>
                 </tr>
