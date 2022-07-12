@@ -10,11 +10,12 @@ import {
   Localhost,
   DAppProvider,
   Config,
+  Goerli,
 } from "@usedapp/core";
 
 const usedappConfig: Config = {
   autoConnect: true,
-  networks: [Mainnet, Rinkeby, Ropsten, Polygon, Localhost],
+  networks: [Mainnet, Rinkeby, Ropsten, Goerli, Polygon, Localhost],
   multicallAddresses: {
     [Localhost.chainId]: "0x0000000000000000000000000000000000000000",
   },

@@ -8,7 +8,7 @@ import {
 } from "@usedapp/core";
 
 export const WRAPPERS_GATEWAY_URL =
-  process.env.NEXT_WRAPPERS_GATEWAY_URL ?? "https://ipfs.wrappers.io";
+  process.env.NEXT_WRAPPERS_GATEWAY_URL ?? "https://ipfs.wrappers.dev";
 
 export const ETH_PROVIDERS = {
   [Mainnet.chainId]:
@@ -42,6 +42,9 @@ export const ENS_CONTRACT_ADDRESSES: Record<
     registry: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
   },
   "4": {
+    registry: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
+  },
+  "5": {
     registry: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
   },
 };

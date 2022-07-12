@@ -85,6 +85,7 @@ const Navigation: React.FC = () => {
                   <option value="1">Mainnet</option>
                   <option value="137">Polygon</option>
                   <option value="4">Rinkeby</option>
+                  <option value="5">Goerli</option>
                   <option value="1337">Localhost</option>
                 </select>
               </div>

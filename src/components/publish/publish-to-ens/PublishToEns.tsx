@@ -4,7 +4,7 @@ import { setOcrIdAsContenthash } from "../../../utils/ocr/setOcrIdAsContenthash"
 import { Network } from "../../../utils/Network";
 import { ENS_CONTRACT_ADDRESSES } from "../../../constants";
 
-import { Rinkeby, useEthers, Localhost, Ropsten, Mainnet } from "@usedapp/core";
+import { useEthers } from "@usedapp/core";
 import { useEffect, useState } from "react";
 
 const getCanEnsPublish = (

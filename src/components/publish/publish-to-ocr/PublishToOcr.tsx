@@ -5,7 +5,7 @@ import { Network } from "../../../utils/Network";
 import { OCR_CONTRACT_ADDRESSES } from "../../../constants";
 
 import { ethers } from "ethers";
-import { Rinkeby, useEthers, Localhost, Polygon } from "@usedapp/core";
+import { useEthers } from "@usedapp/core";
 import { useEffect, useState } from "react";
 
 const getCanOcrPublish = (
