@@ -55,11 +55,15 @@ const LoadWrapper: React.FC<{
   const [files, setFiles] = useState<InMemoryFile[]>([]);
   const [cid, setCID] = useState<string | undefined>();
   const [ensDomain, setEnsDomain] = useState<EnsDomain | undefined>();
+  const [selectedEnsDomain, setSelectedEnsDomain] = useState<
+    EnsDomain | undefined
+  >();
   const [wnsDomain, setWnsDomain] = useState<EnsDomain | undefined>();
   const [ocrId, setOcrId] = useState<OcrId>();
   const [hasLoadedWrapper, setHasLoadedWrapper] = useState<boolean>(false);
   const [foundEnsDomains, setFoundEnsDomains] = useState<
-    { cid?: string; ocrId?: OcrId; chainId: number }[] | undefined
+    | { cid?: string; ocrId?: OcrId; chainId: number; ensDomain: EnsDomain }[]
+    | undefined
   >();
 
   useEffect(() => {
@@ -116,13 +120,13 @@ const LoadWrapper: React.FC<{
     if (files && files.length) {
       setLoadedWrapper({
         cid,
-        ensDomain,
+        ensDomain: selectedEnsDomain,
         ocrId,
         files,
       });
       setHasLoadedWrapper(true);
     }
-  }, [files, cid, ensDomain, ocrId, setLoadedWrapper]);
+  }, [files, cid, ocrId, setLoadedWrapper, selectedEnsDomain]);
 
   useDebouncedEffect(
     () => {
@@ -150,6 +154,7 @@ const LoadWrapper: React.FC<{
           );
           return {
             ...result,
+            ensDomain,
             chainId: parseInt(x),
           };
         });
@@ -337,7 +342,13 @@ const LoadWrapper: React.FC<{
                     <div
                       className="success-back round pad pointer"
                       key={i}
-                      onClick={() => setCID(x.cid)}
+                      onClick={() => {
+                        setCID(x.cid);
+                        setSelectedEnsDomain({
+                          name: x.ensDomain.name,
+                          chainId: x.chainId,
+                        });
+                      }}
                     >
                       <span>
                         {Network.fromChainId(x.chainId).label} - IPFS CID:{" "}
@@ -349,7 +360,9 @@ const LoadWrapper: React.FC<{
                     <div
                       className="success-back round pad pointer"
                       key={i}
-                      onClick={() => setOcrId(x.ocrId)}
+                      onClick={() => {
+                        setOcrId(x.ocrId);
+                      }}
                     >
                       <span>
                         {Network.fromChainId(x.chainId).label} - OCR ID:{" "}
