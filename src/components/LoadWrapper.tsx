@@ -340,7 +340,7 @@ const LoadWrapper: React.FC<{
                 <>
                   {x.cid && (
                     <div
-                      className="success-back round pad pointer"
+                      className="success-back round pad m-2 pointer"
                       key={i}
                       onClick={() => {
                         setCID(x.cid);
@@ -358,7 +358,7 @@ const LoadWrapper: React.FC<{
                   )}
                   {x.ocrId && (
                     <div
-                      className="success-back round pad pointer"
+                      className="success-back round pad m-2 pointer"
                       key={i}
                       onClick={() => {
                         setOcrId(x.ocrId);
