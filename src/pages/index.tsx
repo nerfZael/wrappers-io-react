@@ -1,6 +1,7 @@
 import PublishWrapperModal from "../components/PublishWrapperModal";
-import Navigation from "../components/navigation";
+import Navigation from "../components/Navigation";
 import { WRAPPERS_GATEWAY_URL } from "../constants";
+import { toPrettyHex } from "../utils/toPrettyHex";
 
 import { ReactElement, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -41,13 +42,13 @@ const Home = (): ReactElement<any, any> => {
   return (
     <div>
       <Navigation></Navigation>
-      <div className="page">
-        <h1>Dashboard</h1>
+      <div className="page container-xl">
+        <h2 className="p-3 mt-2 text-center">Dashboard</h2>
 
         <div className="widgets-container">
           {account && (
             <>
-              <div className="second-column">
+              <div className="mr-4 mt-4 mb-4">
                 <button
                   className="btn btn-success"
                   onClick={() => setShouldShowPublishModal(true)}
@@ -59,7 +60,7 @@ const Home = (): ReactElement<any, any> => {
           )}
         </div>
 
-        <div className="widget">
+        <div className="widget widget-border widget-shadow">
           <table className="table" cellSpacing="3" cellPadding="3">
             <thead>
               <tr>
@@ -105,12 +106,19 @@ const Home = (): ReactElement<any, any> => {
                       )}
                     </span>
                   </td>
-                  <td>{wrapper.cid}</td>
+                  <td>{toPrettyHex(wrapper.cid)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        {/* <div className="widget widget-border widget-shadow p-3 widget-small">
+          <div>IPFS node: ipfs.wrappers.io</div>
+          <div>
+            Status: <span className="text-success">online</span>
+          </div>
+        </div> */}
         {publishModal}
         <ToastContainer />
       </div>
