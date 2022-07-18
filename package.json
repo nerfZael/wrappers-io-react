@@ -5,7 +5,7 @@
   "dependencies": {
     "@nerfzael/encoding": "0.3.0",
     "@nerfzael/memory-fs": "0.1.1",
-    "@nerfzael/ocr-core": "0.2.3",
+    "@nerfzael/ocr-core": "0.3.0",
     "@polywrap/schema-compose": "0.2.0",
     "@polywrap/schema-parse": "0.2.0",
     "@polywrap/wrap-manifest-types-js": "0.2.0",
