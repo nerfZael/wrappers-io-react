@@ -14,20 +14,14 @@ import { renderSchema } from "@polywrap/schema-compose";
 import { InMemoryFile } from "@nerfzael/encoding";
 import { useEffect, useState } from "react";
 import { deserializeWrapManifest } from "@polywrap/wrap-manifest-types-js";
+import WrapperDependencyView from "./WrapperDependencyView";
 
 const LoadedWrapperView: React.FC<{
   wrapper: LoadedWrapper;
   setWrapper: (wrapper: LoadedWrapper) => void;
   ipfsNode: IPFSHTTPClient;
   setLoadedWrapperInfo: (wrapperInfo: WrapperInfo) => void;
-  setPublishedWrapper: (publishedWrapper: PublishedWrapper) => void;
-}> = ({
-  wrapper,
-  ipfsNode,
-  setWrapper,
-  setLoadedWrapperInfo,
-  setPublishedWrapper,
-}) => {
+}> = ({ wrapper, ipfsNode, setWrapper, setLoadedWrapperInfo }) => {
   const { library: provider } = useEthers();
   const [selectedTab, setSelectedTab] = useState<string | undefined>();
   const [wrapperInfo, setWrapperInfo] = useState<WrapperInfo>();
@@ -147,55 +141,13 @@ const LoadedWrapperView: React.FC<{
               </div>
             )}
             {selectedTab === "Dependencies" && (
-              <div className="">
-                {wrapperInfo?.dependencies.map((wrapUri: string) => (
-                  <div className="clickable p-2" key={wrapUri}>
-                    <span
-                      onClick={async () => {
-                        if (!provider) {
-                          return;
-                        }
-
-                        if (wrapUri.startsWith("wrap://ens/")) {
-                          const domainWithNetwork = wrapUri.slice(
-                            "wrap://ens/".length,
-                            wrapUri.length
-                          );
-                          if (domainWithNetwork.includes("/")) {
-                            const network = domainWithNetwork.split("/")[0];
-                            const domain = domainWithNetwork.split("/")[1];
-                          } else {
-                            const network = "mainnet";
-                            const domain = domainWithNetwork;
-
-                            setPublishedWrapper({
-                              ensDomain: {
-                                name: domain,
-                                chainId: 1,
-                              },
-                            });
-                          }
-                        } else if (wrapUri.startsWith("wrap://ipfs/")) {
-                          const cid = wrapUri.slice(
-                            "wrap://ipfs/".length,
-                            wrapUri.length
-                          );
-
-                          setPublishedWrapper({
-                            cid,
-                          });
-                        }
-                      }}
-                    >
-                      {wrapUri}
-                    </span>
-                  </div>
-                ))}
-                {wrapperInfo &&
-                  !(
-                    wrapperInfo.dependencies && wrapperInfo.dependencies.length
-                  ) && <div className="">No dependencies</div>}
-              </div>
+              <>
+                {wrapperInfo && (
+                  <WrapperDependencyView
+                    wrapperInfo={wrapperInfo}
+                  ></WrapperDependencyView>
+                )}
+              </>
             )}
             {selectedTab === "Schema" && wrapperInfo?.schema && (
               <SyntaxHighlighter language="graphql" style={{ ...codeStyle }}>
@@ -203,13 +155,11 @@ const LoadedWrapperView: React.FC<{
               </SyntaxHighlighter>
             )}
             {selectedTab === "Deployment" && (
-              <div>
-                <WrapperDeployment
-                  wrapper={wrapper}
-                  ipfsNode={ipfsNode}
-                  setWrapper={setWrapper}
-                ></WrapperDeployment>
-              </div>
+              <WrapperDeployment
+                wrapper={wrapper}
+                ipfsNode={ipfsNode}
+                setWrapper={setWrapper}
+              ></WrapperDeployment>
             )}
           </div>
         </div>
