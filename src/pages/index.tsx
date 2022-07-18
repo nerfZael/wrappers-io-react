@@ -12,6 +12,7 @@ import "react-app-polyfill/ie11";
 import "core-js/features/array/find";
 import "core-js/features/array/includes";
 import "core-js/features/number/is-nan";
+import Link from "next/link";
 
 const Home = (): ReactElement<any, any> => {
   const { account, library: provider } = useEthers();
@@ -86,28 +87,30 @@ const Home = (): ReactElement<any, any> => {
                 //   </tr>
                 // </Link>
 
-                <tr key={index} onClick={() => setCidToPublish(wrapper.cid)}>
-                  <td>
-                    <span>{wrapper.name}</span>
-                  </td>
-                  <td>
-                    <span>{wrapper.version}</span>
-                  </td>
-                  <td>
-                    <span>{wrapper.type}</span>
-                  </td>
-                  <td>
-                    <span>{wrapper.size}</span>
-                  </td>
-                  <td>
-                    <span>
-                      {wrapper.indexes.reduce(
-                        (a: string, b: string) => a + ", " + b
-                      )}
-                    </span>
-                  </td>
-                  <td>{toPrettyHex(wrapper.cid)}</td>
-                </tr>
+                <Link key={index} href={`/wrapper/ipfs?value=${wrapper.cid}`}>
+                  <tr key={index}>
+                    <td>
+                      <span>{wrapper.name}</span>
+                    </td>
+                    <td>
+                      <span>{wrapper.version}</span>
+                    </td>
+                    <td>
+                      <span>{wrapper.type}</span>
+                    </td>
+                    <td>
+                      <span>{wrapper.size}</span>
+                    </td>
+                    <td>
+                      <span>
+                        {wrapper.indexes.reduce(
+                          (a: string, b: string) => a + ", " + b
+                        )}
+                      </span>
+                    </td>
+                    <td>{toPrettyHex(wrapper.cid)}</td>
+                  </tr>
+                </Link>
               ))}
             </tbody>
           </table>
