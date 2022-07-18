@@ -103,7 +103,7 @@ const PublishToEns: React.FC<{
   };
 
   return (
-    <div className="PublishToIpfs">
+    <div className="PublishToIpfs m-2">
       <div className="registry-section ens">
         {!(wrapper.ensDomain && chainId === wrapper.ensDomain.chainId) && (
           <>

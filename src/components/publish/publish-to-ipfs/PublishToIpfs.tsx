@@ -52,7 +52,7 @@ const PublishToIpfs: React.FC<{
   };
 
   return (
-    <div className="PublishToIpfs">
+    <div className="PublishToIpfs m-2">
       <div className="registry-section ipfs">
         {!wrapper.cid && (
           <button
