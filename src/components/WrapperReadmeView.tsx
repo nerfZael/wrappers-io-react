@@ -8,7 +8,7 @@ const WrapperReadmeView: React.FC<{
 }> = ({ wrapperInfo }) => {
   return (
     <div className="WrapperReadmeView">
-      <div className="px-5 pb-5">
+      <div className="px-4 pb-5">
         <ReactMarkdown className="markdown-body" remarkPlugins={[remarkGfm]}>
           {wrapperInfo.readme as string}
         </ReactMarkdown>
