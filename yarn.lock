@@ -1947,17 +1947,17 @@
     ethers "5.6.9"
     typescript "4.4.2"
 
-"@nerfzael/memory-fs@0.1.1", "@nerfzael/memory-fs@^0.1.1":
+"@nerfzael/memory-fs@0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@nerfzael/memory-fs/-/memory-fs-0.1.1.tgz#b3be46bc8bb9a0e9a56db7c1e2391c08b41aa9de"
   integrity sha512-bP7WKML1nmSEUWkOlw31JH1DMuaF5Ez//W8yZTx8JB8/64+SSE6QNBLiqt/wEp1OycoXiuBHoiXFMvsRdER2iQ==
   dependencies:
     typescript "4.4.2"
 
-"@nerfzael/ocr-core@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@nerfzael/ocr-core/-/ocr-core-0.3.0.tgz#bb6d12c5898a490fb5e5d3f3cb0df6518bd9f088"
-  integrity sha512-7PBgzJ4NtrZW5fFOt815w6LP0pzuTR1eQ5+xhw7A1cTTJl9lsGvScPLzi+t6EHLmSc1FWKMMXNRYgTVLJf9qdA==
+"@nerfzael/ocr-core@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@nerfzael/ocr-core/-/ocr-core-0.4.0.tgz#39f08c606e3b7272a407648ae837562931562f05"
+  integrity sha512-490W9XOrsXMIK9GFBBprIht4lmvAbLXx4V1eBToUbuWf7jy7SCJTt5bnrR1WkQz43NYC/dMDFbUa/rGGjUx1uw==
   dependencies:
     "@nerfzael/encoding" "0.2.5"
     ethers "5.6.9"
