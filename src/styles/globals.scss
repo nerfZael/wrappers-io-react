@@ -31,6 +31,7 @@ html {
 @import "./table.scss";
 @import "./widget.scss";
 @import "./text.scss";
+@import "./markdown.scss";
 @import url('https://fonts.googleapis.com/css?family=Varela+Round');
 
 body {
@@ -274,4 +275,9 @@ pre code {
 
 .inner-dropzone {
   min-height: 500px;
+  padding: 20px;
+}
+
+.WrapperReadmeView {
+  background: #353542;
 }

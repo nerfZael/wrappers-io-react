@@ -102,7 +102,7 @@ const LoadWrapper: React.FC<{
         setUploadType(undefined);
       }
     })();
-  }, [acceptedFiles, setLoadedWrapper]);
+  }, [acceptedFiles]);
 
   useEffect(() => {
     if (cid && !(files && files.length)) {
@@ -262,7 +262,7 @@ const LoadWrapper: React.FC<{
                   {!files || !files.length ? (
                     <p>
                       Drag &quot;n&quot; drop the build folder here, or click to
-                      select it
+                      select the files
                     </p>
                   ) : (
                     <></>

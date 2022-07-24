@@ -4,12 +4,12 @@ import { WrapperInfo } from "../models/WrapperInfo";
 import { PublishedWrapper } from "../models/PublishedWrapper";
 import Navigation from "./Navigation";
 import LoadWrapper from "./LoadWrapper";
+import { stripBasePath } from "../utils/stripBasePath";
 
 import { IPFSHTTPClient } from "ipfs-http-client";
 import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
 import { InMemoryFile } from "@nerfzael/memory-fs";
-import { stripBasePath } from "../utils/stripBasePath";
 
 const readFile = (file: File): Promise<InMemoryFile> => {
   return new Promise<InMemoryFile>((resolve, reject) => {
@@ -30,7 +30,7 @@ const readFile = (file: File): Promise<InMemoryFile> => {
 const WrapperPageContent: React.FC<{
   wrapper: LoadedWrapper | undefined;
   ipfsNode: IPFSHTTPClient;
-  setWrapper: (wrapper: LoadedWrapper) => void;
+  setWrapper: (wrapper: LoadedWrapper | undefined) => void;
 }> = ({ wrapper, ipfsNode, setWrapper }) => {
   const [wrapperInfo, setWrapperInfo] = useState<WrapperInfo>();
   const [publishedWrapper, setPublishedWrapper] = useState<
@@ -79,7 +79,7 @@ const WrapperPageContent: React.FC<{
           )}
           {!isDragAccept && (
             <>
-              <h2 className="p-3 mt-2 text-center">
+              <h2 className="p-3 mt-2">
                 {wrapperInfo && wrapperInfo.name && (
                   <span>{wrapperInfo.name}</span>
                 )}

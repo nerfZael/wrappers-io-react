@@ -11,7 +11,7 @@ const WrapperDeployment: React.FC<{
   setWrapper: (wrapper: LoadedWrapper) => void;
 }> = ({ wrapper, ipfsNode, setWrapper }) => {
   return (
-    <div>
+    <div className="p-4">
       {wrapper && (
         <>
           <PublishToIpfs
