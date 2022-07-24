@@ -45,7 +45,7 @@ const Navigation: React.FC = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link href="/wrapper">
+              <Link href="/w">
                 <a className="nav-link">Wrapper</a>
               </Link>
             </li>

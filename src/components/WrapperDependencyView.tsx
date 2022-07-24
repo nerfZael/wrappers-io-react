@@ -9,17 +9,17 @@ const getDependencyUrl = (wrapUri: string): string => {
       const network = domainWithNetwork.split("/")[0];
       const domain = domainWithNetwork.split("/")[1];
 
-      return `/wrapper/ens/${network}/${domain}`;
+      return `/w/ens/${network}/${domain}`;
     } else {
       const network = "mainnet";
       const domain = domainWithNetwork;
 
-      return `/wrapper/ens/${network}/${domain}`;
+      return `/w/ens/${network}/${domain}`;
     }
   } else if (wrapUri.startsWith("ipfs/")) {
     const cid = wrapUri.slice("ipfs/".length, wrapUri.length);
 
-    return `wrapper/ipfs/${cid}`;
+    return `w/ipfs/${cid}`;
   }
 
   return "";

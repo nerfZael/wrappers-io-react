@@ -7,7 +7,25 @@ import LoadWrapper from "./LoadWrapper";
 
 import { IPFSHTTPClient } from "ipfs-http-client";
 import { useDropzone } from "react-dropzone";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { InMemoryFile } from "@nerfzael/memory-fs";
+import { stripBasePath } from "../utils/stripBasePath";
+
+const readFile = (file: File): Promise<InMemoryFile> => {
+  return new Promise<InMemoryFile>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async (e: any) => {
+      const text = e.target.result;
+
+      resolve({
+        path: (file as any)["path"],
+        content: text,
+      } as InMemoryFile);
+    };
+
+    reader.readAsArrayBuffer(file);
+  });
+};
 
 const WrapperPageContent: React.FC<{
   wrapper: LoadedWrapper | undefined;
@@ -19,8 +37,24 @@ const WrapperPageContent: React.FC<{
     PublishedWrapper | undefined
   >();
 
-  const result = useDropzone({ noClick: true });
-  const { acceptedFiles, getRootProps, getInputProps, isDragAccept } = result;
+  const { acceptedFiles, getRootProps, getInputProps, isDragAccept } =
+    useDropzone({ noClick: true });
+
+  useEffect(() => {
+    (async () => {
+      if (acceptedFiles && acceptedFiles.length) {
+        const result = await Promise.all(
+          acceptedFiles.map(async (x) => {
+            return await readFile(x);
+          })
+        );
+
+        setWrapper({
+          files: stripBasePath(result),
+        });
+      }
+    })();
+  }, [acceptedFiles, setWrapper]);
 
   const dropHover = isDragAccept ? " drop-hover" : "";
 
@@ -34,11 +68,14 @@ const WrapperPageContent: React.FC<{
             className: `dropzone ${dropHover}`,
           })}
         >
-          <input {...getInputProps()} />
           {isDragAccept && (
-            <p>
-              Drag &quot;n&quot; drop some files here, or click to select files
-            </p>
+            <div className="inner-dropzone">
+              <input {...getInputProps()} />
+              <p>
+                Drag &quot;n&quot; drop the build folder here, or click to
+                select the files
+              </p>
+            </div>
           )}
           {!isDragAccept && (
             <>
