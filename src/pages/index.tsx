@@ -2,6 +2,7 @@ import PublishWrapperModal from "../components/PublishWrapperModal";
 import Navigation from "../components/Navigation";
 import { WRAPPERS_GATEWAY_URL } from "../constants";
 import { toPrettyHex } from "../utils/toPrettyHex";
+import PersistenceGatewayWidget from "../components/PersistenceGatewayWidget";
 
 import { ReactElement, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -44,12 +45,12 @@ const Home = (): ReactElement<any, any> => {
     <div>
       <Navigation></Navigation>
       <div className="page container-xl">
-        <h2 className="p-3 mt-2 text-center">Dashboard</h2>
+        <h2 className="pt-3 pl-3 pr-3 pd-2 mt-2 text-center">Dashboard</h2>
 
         <div className="widgets-container">
           {account && (
             <>
-              <div className="mr-4 mt-4 mb-4">
+              <div className="mr-2 mt-2 mb-3">
                 <button
                   className="btn btn-success"
                   onClick={() => setShouldShowPublishModal(true)}
@@ -87,7 +88,7 @@ const Home = (): ReactElement<any, any> => {
                 //   </tr>
                 // </Link>
 
-                <Link key={index} href={`/wrapper/ipfs?value=${wrapper.cid}`}>
+                <Link key={index} href={`/wrapper/ipfs/${wrapper.cid}`}>
                   <tr key={index}>
                     <td>
                       <span>{wrapper.name}</span>
@@ -122,6 +123,7 @@ const Home = (): ReactElement<any, any> => {
             Status: <span className="text-success">online</span>
           </div>
         </div> */}
+        {/* <PersistenceGatewayWidget></PersistenceGatewayWidget> */}
         {publishModal}
         <ToastContainer />
       </div>

@@ -4,7 +4,7 @@ import { LoadedWrapper } from "../models/LoadedWrapper";
 import { WrapperInfo } from "../models/WrapperInfo";
 import { toPrettyNumber } from "../utils/toPrettyNumber";
 import WrapperDeployment from "./WrapperDeployment";
-import { PublishedWrapper } from "../models/PublishedWrapper";
+import WrapperDependencyView from "./WrapperDependencyView";
 
 import { IPFSHTTPClient } from "ipfs-http-client";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -14,7 +14,6 @@ import { renderSchema } from "@polywrap/schema-compose";
 import { InMemoryFile } from "@nerfzael/encoding";
 import { useEffect, useState } from "react";
 import { deserializeWrapManifest } from "@polywrap/wrap-manifest-types-js";
-import WrapperDependencyView from "./WrapperDependencyView";
 
 const LoadedWrapperView: React.FC<{
   wrapper: LoadedWrapper;
