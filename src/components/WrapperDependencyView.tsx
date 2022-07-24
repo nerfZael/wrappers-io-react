@@ -39,7 +39,7 @@ const WrapperDependencyView: React.FC<{
   wrapperInfo: WrapperInfo;
 }> = ({ wrapperInfo }) => {
   return (
-    <div className="WrapperDependencyView widget p-4">
+    <div className="WrapperDependencyView p-4">
       <div className="">
         {wrapperInfo?.dependencies.map((wrapUri: string) => (
           <Link href={getDependencyUrl(wrapUri)} key={wrapUri}>
