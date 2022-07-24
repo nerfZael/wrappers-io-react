@@ -45,22 +45,7 @@ const Home = (): ReactElement<any, any> => {
     <div>
       <Navigation></Navigation>
       <div className="page container-xl">
-        <h2 className="pt-3 pl-3 pr-3 pd-2 mt-2 text-center">Dashboard</h2>
-
-        <div className="widgets-container">
-          {account && (
-            <>
-              <div className="mr-2 mt-2 mb-3">
-                <button
-                  className="btn btn-success"
-                  onClick={() => setShouldShowPublishModal(true)}
-                >
-                  Load wrapper
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+        <h2 className="pt-3 pl-3 pr-3 pb-2 mt-2 mb-4 text-center">Dashboard</h2>
 
         <div className="widget widget-border widget-shadow">
           <table className="table" cellSpacing="3" cellPadding="3">

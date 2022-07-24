@@ -3,8 +3,15 @@ import { WrapperInfo } from "../models/WrapperInfo";
 import Link from "next/link";
 
 const getDependencyUrl = (wrapUri: string): string => {
-  if (wrapUri.startsWith("ens/")) {
-    const domainWithNetwork = wrapUri.slice("ens/".length, wrapUri.length);
+  const uriWithoutProtocol = wrapUri.startsWith("wrap://")
+    ? wrapUri.slice("wrap://".length, wrapUri.length)
+    : wrapUri;
+
+  if (uriWithoutProtocol.startsWith("ens/")) {
+    const domainWithNetwork = uriWithoutProtocol.slice(
+      "ens/".length,
+      uriWithoutProtocol.length
+    );
     if (domainWithNetwork.includes("/")) {
       const network = domainWithNetwork.split("/")[0];
       const domain = domainWithNetwork.split("/")[1];
@@ -16,8 +23,11 @@ const getDependencyUrl = (wrapUri: string): string => {
 
       return `/w/ens/${network}/${domain}`;
     }
-  } else if (wrapUri.startsWith("ipfs/")) {
-    const cid = wrapUri.slice("ipfs/".length, wrapUri.length);
+  } else if (uriWithoutProtocol.startsWith("ipfs/")) {
+    const cid = uriWithoutProtocol.slice(
+      "ipfs/".length,
+      uriWithoutProtocol.length
+    );
 
     return `w/ipfs/${cid}`;
   }
