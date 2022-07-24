@@ -1,13 +1,8 @@
 import { OcrContract } from "./OcrContract";
+import { MAX_OCR_PACKAGE_SIZE } from "../../constants";
 
 import { OcrId } from "@nerfzael/ocr-core";
 import { BigNumber, Signer } from "ethers";
-
-const MAX_OCR_PACKAGE_SIZE = 1_000_000;
-
-export const ocrContractAddresses: Record<string, string> = {
-  "1": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
-};
 
 export const publishDataToOcr = async (
   data: Uint8Array,
