@@ -1,5 +1,5 @@
 import path from "path-browserify";
-import { InMemoryFile } from "@nerfzael/encoding";
+import { InMemoryFile } from "@nerfzael/memory-fs";
 
 function prefix(words: string[]) {
   // check border cases size 1 array and empty first word)

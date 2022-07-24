@@ -4,7 +4,7 @@ import map from "it-map";
 import { pipe } from "it-pipe";
 import { extract } from "it-tar";
 import { IPFSHTTPClient } from "ipfs-http-client";
-import { InMemoryFile } from "@nerfzael/encoding";
+import { InMemoryFile } from "@nerfzael/memory-fs";
 
 async function* tarballed(source: any) {
   yield* pipe(source, extract(), async function* (source) {

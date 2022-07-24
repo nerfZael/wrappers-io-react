@@ -1,5 +1,5 @@
 import { IPFSHTTPClient } from "ipfs-http-client";
-import { InMemoryFile } from "@nerfzael/encoding";
+import { InMemoryFile } from "@nerfzael/memory-fs";
 
 export const publishFilesToIpfs = async (
   files: InMemoryFile[],

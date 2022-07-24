@@ -16,7 +16,7 @@ import { fetchCidOrOcrId } from "../utils/ens/fetchCidOrOcrId";
 import { useDebouncedEffect } from "../utils/useDebouncedEffect";
 
 import { useEffect, useState } from "react";
-import { InMemoryFile } from "@nerfzael/encoding";
+import { InMemoryFile } from "@nerfzael/memory-fs";
 import { useEthers } from "@usedapp/core";
 import { useDropzone } from "react-dropzone";
 import { IPFSHTTPClient } from "ipfs-http-client";

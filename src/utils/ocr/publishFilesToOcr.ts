@@ -4,7 +4,8 @@ import {
   OCR_BYTES_FOR_FILE_SIZE,
 } from "../../constants";
 
-import { encodeFiles, InMemoryFile } from "@nerfzael/encoding";
+import { encodeFiles } from "@nerfzael/encoding";
+import { InMemoryFile } from "@nerfzael/memory-fs";
 import { OcrId } from "@nerfzael/ocr-core";
 import { Signer } from "ethers";
 
