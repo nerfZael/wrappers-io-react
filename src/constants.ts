@@ -69,4 +69,7 @@ export const OCR_CONTRACT_ADDRESSES: Record<string, Record<string, string>> = {
   "1337": {
     "1": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
   },
+  "137": {
+    "1": "0xD58b0e11411fc2906d41A3f1Cb2174C7e154Bd7c",
+  },
 };
