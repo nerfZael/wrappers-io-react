@@ -72,7 +72,7 @@ const LoadedWrapperView: React.FC<{
             : [],
           methods: abi && abi.moduleType ? abi.moduleType.methods : undefined,
         });
-      } catch (e) {
+      } catch (e: any) {
         alert(e.message);
       }
     })();
