@@ -43,9 +43,9 @@ const WrapperDependencyView: React.FC<{
       <div className="">
         {wrapperInfo?.dependencies.map((wrapUri: string) => (
           <Link href={getDependencyUrl(wrapUri)} key={wrapUri}>
-            <span className="clickable p-2" key={wrapUri}>
+            <div className="clickable p-2" key={wrapUri}>
               {wrapUri}
-            </span>
+            </div>
           </Link>
         ))}
         {wrapperInfo &&
