@@ -5,6 +5,7 @@ import { WRAPPERS_GATEWAY_URL } from "../constants";
 import { ReactElement, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useEthers } from "@usedapp/core";
+import { CID } from "multiformats";
 import axios from "axios";
 import "react-app-polyfill/stable";
 import "react-app-polyfill/ie11";
@@ -18,6 +19,7 @@ const Home = (): ReactElement<any, any> => {
   const [cidToPublish, setCidToPublish] = useState<string | undefined>();
   const [shouldShowPublishModal, setShouldShowPublishModal] = useState(false);
   const [shouldShowWnsModal, setShouldShowWnsModal] = useState(false);
+  const [toggleCidVersion, setToggleCidVersion] = useState(false);
 
   useEffect(() => {
     axios.get(`${WRAPPERS_GATEWAY_URL}/pins?json=true`).then((result) => {
@@ -68,7 +70,9 @@ const Home = (): ReactElement<any, any> => {
                 <th>Type</th>
                 <th>Size</th>
                 <th>Indexes</th>
-                <th>CID</th>
+                <th onClick={() => setToggleCidVersion(!toggleCidVersion)}>
+                  CID
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -85,7 +89,7 @@ const Home = (): ReactElement<any, any> => {
                 //   </tr>
                 // </Link>
 
-                <tr key={index} onClick={() => setCidToPublish(wrapper.cid)}>
+                <tr key={index}>
                   <td>
                     <span>{wrapper.name}</span>
                   </td>
@@ -105,7 +109,14 @@ const Home = (): ReactElement<any, any> => {
                       )}
                     </span>
                   </td>
-                  <td>{wrapper.cid}</td>
+                  <td>
+                    {toggleCidVersion
+                      ? wrapper.cid
+                      : CID.parse(wrapper.cid).toV1().toString()}
+                  </td>
+                  <div onClick={() => setCidToPublish(wrapper.cid)}>
+                    view
+                  </div>
                 </tr>
               ))}
             </tbody>
