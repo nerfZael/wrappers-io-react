@@ -50,7 +50,7 @@ const LoadedWrapperView: React.FC<{
         return;
       }
 
-      const manifest = deserializeWrapManifest(manifestContent);
+      const manifest = await deserializeWrapManifest(manifestContent);
       const abi: any = manifest.abi as any;
 
       const schema = renderSchema(abi, false);
