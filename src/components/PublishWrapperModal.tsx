@@ -58,7 +58,6 @@ const PublishWrapperModal: React.FC<{
               setWrapper={setWrapper}
               ipfsNode={ipfsNode}
               setLoadedWrapperInfo={setWrapperInfo}
-              setPublishedWrapper={setPublishedWrapper}
             ></LoadedWrapperView>
           )}
         </div>

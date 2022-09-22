@@ -1,6 +1,8 @@
 import PublishWrapperModal from "../components/PublishWrapperModal";
-import Navigation from "../components/navigation";
+import Navigation from "../components/Navigation";
 import { WRAPPERS_GATEWAY_URL } from "../constants";
+import { toPrettyHex } from "../utils/toPrettyHex";
+import PersistenceGatewayWidget from "../components/PersistenceGatewayWidget";
 
 import { ReactElement, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -12,6 +14,7 @@ import "react-app-polyfill/ie11";
 import "core-js/features/array/find";
 import "core-js/features/array/includes";
 import "core-js/features/number/is-nan";
+import Link from "next/link";
 
 const Home = (): ReactElement<any, any> => {
   const { account, library: provider } = useEthers();
@@ -43,25 +46,10 @@ const Home = (): ReactElement<any, any> => {
   return (
     <div>
       <Navigation></Navigation>
-      <div className="page">
-        <h1>Dashboard</h1>
+      <div className="page container-xl">
+        <h2 className="pt-3 pl-3 pr-3 pb-2 mt-2 mb-4 text-center">Dashboard</h2>
 
-        <div className="widgets-container">
-          {account && (
-            <>
-              <div className="second-column">
-                <button
-                  className="btn btn-success"
-                  onClick={() => setShouldShowPublishModal(true)}
-                >
-                  Load wrapper
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-
-        <div className="widget">
+        <div className="widget widget-border widget-shadow">
           <table className="table" cellSpacing="3" cellPadding="3">
             <thead>
               <tr>
@@ -89,39 +77,42 @@ const Home = (): ReactElement<any, any> => {
                 //   </tr>
                 // </Link>
 
-                <tr key={index}>
-                  <td>
-                    <span>{wrapper.name}</span>
-                  </td>
-                  <td>
-                    <span>{wrapper.version}</span>
-                  </td>
-                  <td>
-                    <span>{wrapper.type}</span>
-                  </td>
-                  <td>
-                    <span>{wrapper.size}</span>
-                  </td>
-                  <td>
-                    <span>
-                      {wrapper.indexes.reduce(
-                        (a: string, b: string) => a + ", " + b
-                      )}
-                    </span>
-                  </td>
-                  <td>
-                    {toggleCidVersion
-                      ? wrapper.cid
-                      : CID.parse(wrapper.cid).toV1().toString()}
-                  </td>
-                  <div onClick={() => setCidToPublish(wrapper.cid)}>
-                    view
-                  </div>
-                </tr>
+                <Link key={index} href={`/w/ipfs/${wrapper.cid}`}>
+                  <tr key={index}>
+                    <td>
+                      <span>{wrapper.name}</span>
+                    </td>
+                    <td>
+                      <span>{wrapper.version}</span>
+                    </td>
+                    <td>
+                      <span>{wrapper.type}</span>
+                    </td>
+                    <td>
+                      <span>{wrapper.size}</span>
+                    </td>
+                    <td>
+                      <span>
+                        {wrapper.indexes.reduce(
+                          (a: string, b: string) => a + ", " + b
+                        )}
+                      </span>
+                    </td>
+                    <td>{toPrettyHex(wrapper.cid)}</td>
+                  </tr>
+                </Link>
               ))}
             </tbody>
           </table>
         </div>
+
+        {/* <div className="widget widget-border widget-shadow p-3 widget-small">
+          <div>IPFS node: ipfs.wrappers.io</div>
+          <div>
+            Status: <span className="text-success">online</span>
+          </div>
+        </div> */}
+        {/* <PersistenceGatewayWidget></PersistenceGatewayWidget> */}
         {publishModal}
         <ToastContainer />
       </div>

@@ -1,6 +1,6 @@
 import { LoadedWrapper } from "../../../models/LoadedWrapper";
 import { publishFilesToOcr } from "../../../utils/ocr/publishFilesToOcr";
-import { OcrContract } from "../../../utils/ocr/OcrContract";
+import { OcrCoreContract } from "../../../utils/ocr/OcrCoreContract";
 import { Network } from "../../../utils/Network";
 import { OCR_CONTRACT_ADDRESSES } from "../../../constants";
 
@@ -36,6 +36,7 @@ const PublishToOcr: React.FC<{
 
   useEffect(() => {
     setCanOcrPublish(getCanOcrPublish(chainId, wrapper));
+    console.log("wrapper.ocrId", wrapper.ocrId);
   }, [chainId, wrapper]);
 
   useEffect(() => {
@@ -43,11 +44,12 @@ const PublishToOcr: React.FC<{
       return;
     }
 
-    if (
+    const ocrContractAddress =
       OCR_CONTRACT_ADDRESSES[chainId.toString()] &&
-      OCR_CONTRACT_ADDRESSES[chainId.toString()]["1"]
-    ) {
-      setContractAddress(OCR_CONTRACT_ADDRESSES[chainId.toString()]["1"]);
+      OCR_CONTRACT_ADDRESSES[chainId.toString()]["1"];
+
+    if (ocrContractAddress) {
+      setContractAddress(ocrContractAddress);
     } else {
       setContractAddress(undefined);
     }
@@ -61,8 +63,17 @@ const PublishToOcr: React.FC<{
         contractAddress &&
         ethers.utils.isAddress(contractAddress)
       ) {
-        const contract = OcrContract.create(contractAddress, provider);
-        const version = await contract.PROTOCOL_VERSION();
+        const ocrContractAddress =
+          OCR_CONTRACT_ADDRESSES[chainId.toString()] &&
+          OCR_CONTRACT_ADDRESSES[chainId.toString()]["1"];
+
+        if (!ocrContractAddress) {
+          setProtocolVersion(undefined);
+          return;
+        }
+
+        const contract = OcrCoreContract.create(contractAddress, provider);
+        const version = await contract.protocolVersion();
 
         setProtocolVersion(version.toNumber());
       } else {
@@ -102,7 +113,7 @@ const PublishToOcr: React.FC<{
   };
 
   return (
-    <div className="PublishToOCR">
+    <div className="PublishToOCR m-2">
       <div className="registry-section ocr">
         {!wrapper.ocrId && (
           <>

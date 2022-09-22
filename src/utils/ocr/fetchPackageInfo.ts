@@ -9,6 +9,7 @@ export const fetchPackageInfo = async (
   provider: ethers.providers.Provider
 ): Promise<OcrPackageInfo> => {
   const packageInfo = await OcrContract.create(
+    ocrId.protocolVersion,
     ocrId.contractAddress,
     provider
   ).package(ocrId.packageIndex);

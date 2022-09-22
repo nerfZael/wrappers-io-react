@@ -8,7 +8,7 @@ import {
 } from "@usedapp/core";
 
 export const WRAPPERS_GATEWAY_URL =
-  process.env.NEXT_WRAPPERS_GATEWAY_URL ?? "https://ipfs.wrappers.dev";
+  process.env.NEXT_WRAPPERS_GATEWAY_URL ?? "https://ipfs.wrappers.io";
 
 export const ETH_PROVIDERS = {
   [Mainnet.chainId]:
@@ -62,10 +62,14 @@ export const WNS_CONTRACT_ADDRESSES: Record<
   },
 };
 
+export const MAX_OCR_PACKAGE_SIZE = 128_000;
 export const OCR_BYTES_FOR_FILE_PATH = 2;
 export const OCR_BYTES_FOR_FILE_SIZE = 8;
 export const OCR_CONTRACT_ADDRESSES: Record<string, Record<string, string>> = {
   "1337": {
     "1": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+  },
+  "137": {
+    "1": "0xD58b0e11411fc2906d41A3f1Cb2174C7e154Bd7c",
   },
 };

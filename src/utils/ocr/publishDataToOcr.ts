@@ -1,13 +1,8 @@
 import { OcrContract } from "./OcrContract";
+import { MAX_OCR_PACKAGE_SIZE } from "../../constants";
 
 import { OcrId } from "@nerfzael/ocr-core";
 import { BigNumber, Signer } from "ethers";
-
-const MAX_OCR_PACKAGE_SIZE = 1_000_000;
-
-export const ocrContractAddresses: Record<string, string> = {
-  "1": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
-};
 
 export const publishDataToOcr = async (
   data: Uint8Array,
@@ -16,10 +11,14 @@ export const publishDataToOcr = async (
   contractAddress: string,
   signer: Signer
 ): Promise<OcrId> => {
-  const repository = OcrContract.create(contractAddress, signer);
+  const repository = OcrContract.create(
+    protocolVersion,
+    contractAddress,
+    signer
+  );
 
   const partCount = Math.floor(data.byteLength / MAX_OCR_PACKAGE_SIZE) + 1;
-  let packageId: BigNumber = BigNumber.from(0);
+  let packageIndex: BigNumber = BigNumber.from(0);
   for (let i = 0; i < partCount; i++) {
     const part = data.slice(
       i * MAX_OCR_PACKAGE_SIZE,
@@ -30,11 +29,10 @@ export const publishDataToOcr = async (
       const receipt = await tx.wait();
       const event = receipt.events ? receipt.events[0] : undefined;
       console.log(event);
-      packageId = event?.args?.packageId;
-      console.log(packageId);
+      packageIndex = event?.args?.packageIndex;
     } else {
       const tx = await repository.publishPart(
-        packageId,
+        packageIndex,
         part,
         i === partCount - 1
       );
@@ -42,13 +40,13 @@ export const publishDataToOcr = async (
     }
   }
 
-  const packageInfo = await repository.package(packageId);
+  const packageInfo = await repository.package(packageIndex);
 
   return {
     chainId,
     protocolVersion,
     contractAddress,
-    packageIndex: packageId.toNumber(),
+    packageIndex: packageIndex.toNumber(),
     startBlock: packageInfo.startBlock.toNumber(),
     endBlock: packageInfo.endBlock.toNumber(),
   };

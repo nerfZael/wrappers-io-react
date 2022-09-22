@@ -1,6 +1,7 @@
 import PublishToIpfs from "./publish/publish-to-ipfs/PublishToIpfs";
 import PublishToEns from "./publish/publish-to-ens/PublishToEns";
 import { LoadedWrapper } from "../models/LoadedWrapper";
+import PublishToOcr from "./publish/publish-to-ocr/PublishToOcr";
 
 import { IPFSHTTPClient } from "ipfs-http-client";
 
@@ -10,7 +11,7 @@ const WrapperDeployment: React.FC<{
   setWrapper: (wrapper: LoadedWrapper) => void;
 }> = ({ wrapper, ipfsNode, setWrapper }) => {
   return (
-    <div>
+    <div className="p-4">
       {wrapper && (
         <>
           <PublishToIpfs
@@ -25,11 +26,11 @@ const WrapperDeployment: React.FC<{
           {/* <PublishToWns
             wrapper={wrapper}
             setWrapper={setWrapper}
-          ></PublishToWns>
+          ></PublishToWns>*/}
           <PublishToOcr
             wrapper={wrapper}
             setWrapper={setWrapper}
-          ></PublishToOcr> */}
+          ></PublishToOcr>
         </>
       )}
     </div>

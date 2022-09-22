@@ -2,7 +2,7 @@ import { getFilesByOcrId } from "./getFilesByOcrId";
 
 import { ethers } from "ethers";
 import { OcrId } from "@nerfzael/ocr-core";
-import { InMemoryFile } from "@nerfzael/encoding";
+import { InMemoryFile } from "@nerfzael/memory-fs";
 
 export const getFileFromPath = async (
   ocrId: OcrId,

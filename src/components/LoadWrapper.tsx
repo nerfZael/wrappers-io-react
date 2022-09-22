@@ -16,7 +16,7 @@ import { fetchCidOrOcrId } from "../utils/ens/fetchCidOrOcrId";
 import { useDebouncedEffect } from "../utils/useDebouncedEffect";
 
 import { useEffect, useState } from "react";
-import { InMemoryFile } from "@nerfzael/encoding";
+import { InMemoryFile } from "@nerfzael/memory-fs";
 import { useEthers } from "@usedapp/core";
 import { useDropzone } from "react-dropzone";
 import { IPFSHTTPClient } from "ipfs-http-client";
@@ -102,7 +102,7 @@ const LoadWrapper: React.FC<{
         setUploadType(undefined);
       }
     })();
-  }, [acceptedFiles, setLoadedWrapper]);
+  }, [acceptedFiles]);
 
   useEffect(() => {
     if (cid && !(files && files.length)) {
@@ -145,12 +145,14 @@ const LoadWrapper: React.FC<{
         const chainIds = Object.keys(ETH_PROVIDERS);
 
         const promises = chainIds.map(async (x: any) => {
-          const providerUrl = ETH_PROVIDERS[x as number];
-          const provider = ethers.getDefaultProvider(providerUrl);
+          const networkProvider =
+            parseInt(x) === chainId
+              ? provider
+              : ethers.getDefaultProvider(ETH_PROVIDERS[x as number]);
           const result = await fetchCidOrOcrId(
             ensDomain,
             x as number,
-            provider
+            networkProvider
           );
           return {
             ...result,
@@ -244,8 +246,8 @@ const LoadWrapper: React.FC<{
               <option value="fs">File system</option>
               <option value="ipfs">IPFS</option>
               <option value="ens">ENS</option>
-              {/* <option value="wns">WNS</option>
-              <option value="ocr">OCR</option> */}
+              {/* <option value="wns">WNS</option> */}
+              <option value="ocr">OCR</option>
             </select>
           )}
           {showUpload && uploadType && (
@@ -260,7 +262,7 @@ const LoadWrapper: React.FC<{
                   {!files || !files.length ? (
                     <p>
                       Drag &quot;n&quot; drop the build folder here, or click to
-                      select it
+                      select the files
                     </p>
                   ) : (
                     <></>
@@ -337,11 +339,10 @@ const LoadWrapper: React.FC<{
           {foundEnsDomains && foundEnsDomains.length > 0 && (
             <div>
               {foundEnsDomains.map((x, i) => (
-                <>
+                <div key={i}>
                   {x.cid && (
                     <div
                       className="success-back round pad m-2 pointer"
-                      key={i}
                       onClick={() => {
                         setCID(x.cid);
                         setSelectedEnsDomain({
@@ -359,7 +360,6 @@ const LoadWrapper: React.FC<{
                   {x.ocrId && (
                     <div
                       className="success-back round pad m-2 pointer"
-                      key={i}
                       onClick={() => {
                         setOcrId(x.ocrId);
                       }}
@@ -370,7 +370,7 @@ const LoadWrapper: React.FC<{
                       </span>
                     </div>
                   )}
-                </>
+                </div>
               ))}
             </div>
           )}

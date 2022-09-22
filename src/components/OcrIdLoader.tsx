@@ -1,5 +1,6 @@
 import { OcrPackageInfo } from "../models/OcrPackageInfo";
 import { OcrContract } from "../utils/ocr/OcrContract";
+import { OcrCoreContract } from "../utils/ocr/OcrCoreContract";
 
 import { useEffect, useState } from "react";
 import { useEthers } from "@usedapp/core";
@@ -23,8 +24,14 @@ const OcrIdLoader: React.FC<{
         ethers.utils.isAddress(contractAddress) &&
         Number.isInteger(packageIndex)
       ) {
-        const contract = OcrContract.create(contractAddress, provider);
-        const protocolVersion = await contract.PROTOCOL_VERSION();
+        const coreContract = OcrCoreContract.create(contractAddress, provider);
+        const protocolVersion = await coreContract.protocolVersion();
+
+        const contract = OcrContract.create(
+          protocolVersion.toNumber(),
+          contractAddress,
+          provider
+        );
 
         const packageInfo: OcrPackageInfo = await contract.package(
           packageIndex

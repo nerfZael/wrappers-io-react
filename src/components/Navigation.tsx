@@ -1,4 +1,3 @@
-import { Network } from "../utils/Network";
 import { toPrettyHex } from "../utils/toPrettyHex";
 
 import { useEthers } from "@usedapp/core";
@@ -45,12 +44,12 @@ const Navigation: React.FC = () => {
                 <a className="nav-link">Dashboard</a>
               </Link>
             </li>
-            {/* <li className="nav-item">
-              <Link href="/wrapper">
+            <li className="nav-item">
+              <Link href="/w">
                 <a className="nav-link">Wrapper</a>
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a className="nav-link" href="#">
                 ENS
               </a>
