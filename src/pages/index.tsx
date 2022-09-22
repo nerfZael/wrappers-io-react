@@ -98,14 +98,7 @@ const Home = (): ReactElement<any, any> => {
                         )}
                       </span>
                     </td>
-                  <td>
-                    {toPrettyHex(toggleCidVersion
-                      ? wrapper.cid
-                      : CID.parse(wrapper.cid).toV1().toString())}
-                  </td>
-                  <div onClick={() => setCidToPublish(wrapper.cid)}>
-                    view
-                  </div>
+                    <td>{toPrettyHex(wrapper.cid)}</td>
                   </tr>
                 </Link>
               ))}
