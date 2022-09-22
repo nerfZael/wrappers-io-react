@@ -41,40 +41,37 @@ const LoadedWrapperView: React.FC<{
         alert("No wrap.info file found");
         return;
       }
-      try {
-        const manifest = await deserializeWrapManifest(manifestContent, {
-          noValidate: true,
-        });
-        const abi: any = manifest.abi as any;
+      const manifest = await deserializeWrapManifest(manifestContent, {
+        noValidate: true,
+      });
+      const abi = manifest.abi;
 
-        const schema = renderSchema(abi, false);
+      const schema = renderSchema(abi, false);
 
-        const readmeFile =
-          wrapper.files.find((x) => x.path === "README.md") ||
-          wrapper.files.find((x) => x.path === "readme.md");
-        const readme = readmeFile
-          ? new TextDecoder().decode(readmeFile.content)
-          : undefined;
+      const readmeFile =
+        wrapper.files.find((x) => x.path === "README.md") ||
+        wrapper.files.find((x) => x.path === "readme.md");
+      const readme = readmeFile
+        ? new TextDecoder().decode(readmeFile.content)
+        : undefined;
 
-        if (readme) {
-          setSelectedTab("Readme");
-        } else {
-          setSelectedTab("Files");
-        }
-
-        setWrapperInfo({
-          name: manifest.name,
-          readme,
-          abi: abi,
-          schema: schema,
-          dependencies: abi
-            ? abi.importedModuleTypes.map((x: any) => x.uri)
-            : [],
-          methods: abi && abi.moduleType ? abi.moduleType.methods : undefined,
-        });
-      } catch (e: any) {
-        alert(e.message);
+      if (readme) {
+        setSelectedTab("Readme");
+      } else {
+        setSelectedTab("Files");
       }
+
+      setWrapperInfo({
+        name: manifest.name,
+        readme,
+        abi: abi,
+        schema: schema,
+        dependencies:
+          abi && abi.importedModuleTypes
+            ? abi.importedModuleTypes.map((x) => x.uri)
+            : [],
+        methods: abi && abi.moduleType ? abi.moduleType.methods : undefined,
+      });
     })();
   }, [wrapper]);
 
