@@ -12,6 +12,8 @@ const Navigation: React.FC = () => {
     switchNetwork,
   } = useEthers();
 
+  console.log(`Account: ${account}, Chain ID: ${chainId}`);
+
   const connectWallet = async () => {
     await activateBrowserWallet();
   };
