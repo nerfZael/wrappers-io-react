@@ -28,7 +28,6 @@ export const publishDataToOcr = async (
       const tx = await repository.startPublish(part, partCount === 1);
       const receipt = await tx.wait();
       const event = receipt.events ? receipt.events[0] : undefined;
-      console.log(event);
       packageIndex = event?.args?.packageIndex;
     } else {
       const tx = await repository.publishPart(

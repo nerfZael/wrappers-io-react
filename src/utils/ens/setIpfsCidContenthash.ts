@@ -21,8 +21,6 @@ export const setIpfsCidContenthash = async (
 
   const contenthash = "0x" + contentHash.fromIpfs(cid);
 
-  console.log("ethers.utils.namehash(domain)", ethers.utils.namehash(domain));
-  console.log("ethers.utils.namehash(domain)", contenthash);
   const tx = await resolver.setContenthash(
     ethers.utils.namehash(domain),
     contenthash

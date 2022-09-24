@@ -4,16 +4,8 @@ import { useEthers } from "@usedapp/core";
 import Link from "next/link";
 
 const Navigation: React.FC = () => {
-  const {
-    account,
-    activateBrowserWallet,
-    library: provider,
-    chainId,
-    switchNetwork,
-    error,
-  } = useEthers();
-
-  console.log(`Account: ${account}, Chain ID: ${chainId}, Error: `, error);
+  const { account, activateBrowserWallet, chainId, switchNetwork } =
+    useEthers();
 
   const connectWallet = async () => {
     await activateBrowserWallet();

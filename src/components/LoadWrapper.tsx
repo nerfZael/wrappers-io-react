@@ -204,7 +204,6 @@ const LoadWrapper: React.FC<{
         if (savedCid) {
           setCID(savedCid);
         } else {
-          console.log(arrayify(contenthash));
           const savedOcrId = decodeOcrIdFromContenthash(arrayify(contenthash));
           if (savedOcrId) {
             setOcrId(savedOcrId);

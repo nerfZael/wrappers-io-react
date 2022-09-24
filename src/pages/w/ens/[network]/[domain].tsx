@@ -37,7 +37,7 @@ const WrapperPage: NextPage = () => {
         routeChainId === chainId
           ? provider
           : ethers.getDefaultProvider(ETH_PROVIDERS[routeChainId]);
-      console.log("networkProvider", networkProvider);
+
       const result = await fetchCidOrOcrId(
         {
           name: domain as string,
@@ -46,7 +46,6 @@ const WrapperPage: NextPage = () => {
         routeChainId,
         networkProvider
       );
-      console.log("result", result);
 
       if (result.cid) {
         const ipfsFiles = await loadFilesFromIpfs(result.cid, ipfsNode);
@@ -64,7 +63,6 @@ const WrapperPage: NextPage = () => {
           files: ipfsFiles,
         };
 
-        console.log("WRP e", wrp);
         setWrapper(wrp);
       } else if (result.ocrId) {
         const readOnlyProvider = getProvider(
@@ -73,7 +71,6 @@ const WrapperPage: NextPage = () => {
           provider
         );
 
-        console.log(readOnlyProvider);
         if (!readOnlyProvider) {
           return;
         }
@@ -96,7 +93,6 @@ const WrapperPage: NextPage = () => {
           files: packageFiles,
         };
 
-        console.log("WRP e o", wrp);
         setWrapper(wrp);
       }
     })();

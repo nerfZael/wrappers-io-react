@@ -35,7 +35,6 @@ const WrapperPage: NextPage = () => {
           files: ipfsFiles,
         };
 
-        console.log("WRP", wrp);
         setWrapper(wrp);
       }
     })();
