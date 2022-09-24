@@ -10,9 +10,10 @@ const Navigation: React.FC = () => {
     library: provider,
     chainId,
     switchNetwork,
+    error,
   } = useEthers();
 
-  console.log(`Account: ${account}, Chain ID: ${chainId}`);
+  console.log(`Account: ${account}, Chain ID: ${chainId}, Error: `, error);
 
   const connectWallet = async () => {
     await activateBrowserWallet();

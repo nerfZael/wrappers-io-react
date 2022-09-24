@@ -17,13 +17,16 @@ import "core-js/features/number/is-nan";
 import Link from "next/link";
 
 const Home = (): ReactElement<any, any> => {
-  const { account, library: provider, chainId } = useEthers();
+  const { account, library: provider, chainId, error } = useEthers();
   const [indexedWrappers, setIndexedWrappers] = useState<any[]>([]);
   const [cidToPublish, setCidToPublish] = useState<string | undefined>();
   const [shouldShowPublishModal, setShouldShowPublishModal] = useState(false);
   const [shouldShowWnsModal, setShouldShowWnsModal] = useState(false);
   const [toggleCidVersion, setToggleCidVersion] = useState(false);
-  console.log(`Home - Account: ${account}, Chain ID: ${chainId}`);
+  console.log(
+    `Home - Account: ${account}, Chain ID: ${chainId}, Error: `,
+    error
+  );
 
   useEffect(() => {
     axios.get(`${WRAPPERS_GATEWAY_URL}/pins?json=true`).then((result) => {
