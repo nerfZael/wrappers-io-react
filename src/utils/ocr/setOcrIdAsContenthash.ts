@@ -23,7 +23,6 @@ export const setOcrIdAsContenthash = async (
   const resolver = EnsResolverContract.create(resolverAddress, signer);
 
   const contenthash = encodeOcrIdAsContenthash(ocrId);
-  console.log("OCRID", decodeOcrIdFromContenthash(contenthash));
 
   const tx = await resolver.setContenthash(
     ethers.utils.namehash(domain),

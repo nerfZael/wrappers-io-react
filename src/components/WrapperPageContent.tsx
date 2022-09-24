@@ -58,7 +58,6 @@ const WrapperPageContent: React.FC<{
 
   const dropHover = isDragAccept ? " drop-hover" : "";
 
-  console.log("isDragActive", isDragAccept);
   return (
     <>
       <Navigation></Navigation>

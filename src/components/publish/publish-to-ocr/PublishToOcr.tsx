@@ -36,7 +36,6 @@ const PublishToOcr: React.FC<{
 
   useEffect(() => {
     setCanOcrPublish(getCanOcrPublish(chainId, wrapper));
-    console.log("wrapper.ocrId", wrapper.ocrId);
   }, [chainId, wrapper]);
 
   useEffect(() => {

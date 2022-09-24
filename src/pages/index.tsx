@@ -2,12 +2,9 @@ import PublishWrapperModal from "../components/PublishWrapperModal";
 import Navigation from "../components/Navigation";
 import { WRAPPERS_GATEWAY_URL } from "../constants";
 import { toPrettyHex } from "../utils/toPrettyHex";
-import PersistenceGatewayWidget from "../components/PersistenceGatewayWidget";
 
 import { ReactElement, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { useEthers } from "@usedapp/core";
-import { CID } from "multiformats";
 import axios from "axios";
 import "react-app-polyfill/stable";
 import "react-app-polyfill/ie11";
@@ -17,11 +14,9 @@ import "core-js/features/number/is-nan";
 import Link from "next/link";
 
 const Home = (): ReactElement<any, any> => {
-  const { account, library: provider } = useEthers();
   const [indexedWrappers, setIndexedWrappers] = useState<any[]>([]);
   const [cidToPublish, setCidToPublish] = useState<string | undefined>();
   const [shouldShowPublishModal, setShouldShowPublishModal] = useState(false);
-  const [shouldShowWnsModal, setShouldShowWnsModal] = useState(false);
   const [toggleCidVersion, setToggleCidVersion] = useState(false);
 
   useEffect(() => {
