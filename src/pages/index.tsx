@@ -72,7 +72,7 @@ const Home = (): ReactElement<any, any> => {
                 //   </tr>
                 // </Link>
 
-                <Link key={index} href={`/w/ipfs/${wrapper.cid}`}>
+                <Link key={index} href={`/v/ipfs/${wrapper.cid}`}>
                   <tr key={index}>
                     <td>
                       <span>{wrapper.name}</span>
