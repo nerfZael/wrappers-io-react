@@ -16,12 +16,12 @@ const getDependencyUrl = (wrapUri: string): string => {
       const network = domainWithNetwork.split("/")[0];
       const domain = domainWithNetwork.split("/")[1];
 
-      return `/w/ens/${network}/${domain}`;
+      return `/v/ens/${network}/${domain}`;
     } else {
       const network = "mainnet";
       const domain = domainWithNetwork;
 
-      return `/w/ens/${network}/${domain}`;
+      return `/v/ens/${network}/${domain}`;
     }
   } else if (uriWithoutProtocol.startsWith("ipfs/")) {
     const cid = uriWithoutProtocol.slice(
@@ -29,7 +29,7 @@ const getDependencyUrl = (wrapUri: string): string => {
       uriWithoutProtocol.length
     );
 
-    return `w/ipfs/${cid}`;
+    return `v/ipfs/${cid}`;
   }
 
   return "";
