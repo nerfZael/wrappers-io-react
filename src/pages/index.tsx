@@ -88,8 +88,14 @@ const Home = (): ReactElement<any, any> => {
                     </td>
                     <td>
                       <span>
-                        {wrapper.indexes.reduce(
-                          (a: string, b: string) => a + ", " + b
+                        {wrapper.indexes && wrapper.indexes.length > 0 ? (
+                          <>
+                            {wrapper.indexes.reduce(
+                              (a: string, b: string) => a + ", " + b
+                            )}
+                          </>
+                        ) : (
+                          <>ipfs</>
                         )}
                       </span>
                     </td>
